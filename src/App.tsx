@@ -1,10 +1,6 @@
-import { ConnectButton } from "thirdweb/react";
-import thirdwebIcon from "./thirdweb.svg";
-import { client } from "./client";
-import { chain } from "./main";
 import { createWallet, walletConnect, inAppWallet } from "thirdweb/wallets";
-import Card from "./components/Card/Card.components";
-import { LandingPage } from "./screens/LandingPage";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routes/routes";
 
 const wallets = [
   createWallet("io.metamask"),
@@ -18,10 +14,14 @@ const wallets = [
   createWallet("me.rainbow"),
 ];
 
+const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
 export function App() {
-  return (
-    <>
-      <LandingPage></LandingPage>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }

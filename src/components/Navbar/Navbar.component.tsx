@@ -74,8 +74,8 @@ const MenuLinks = ({ isOpen }) => {
       >
         <Stack direction={["column", "row"]} spacing={8} align="center">
           <MenuItem to="/">Home</MenuItem>
-          <MenuItem to="/how">How It works </MenuItem>
-          <MenuItem to="/faetures">Features </MenuItem>
+          <MenuItem to="/about">About </MenuItem>
+          <MenuItem to="/features">Features </MenuItem>
           <MenuItem to="/pricing">Pricing </MenuItem>
         </Stack>
         <ConnectButton
