@@ -4,18 +4,6 @@ import NavBarComponent from "../Navbar/Navbar.component";
 import { Highlight, Heading, useHighlight } from "@chakra-ui/react";
 
 const Header = () => {
-  const highlight = useHighlight({
-    text: `Discover the future of certification, diplomas`,
-    query: ["certification", "diplomas"],
-    styles: {
-      px: "2",
-      py: "1",
-      rounded: "full",
-      fontSize: "3xl",
-      bg: "teal.100",
-    },
-  });
-
   return (
     <>
       <div className="flex flex-col items-center mb-20 md:mb-20">
