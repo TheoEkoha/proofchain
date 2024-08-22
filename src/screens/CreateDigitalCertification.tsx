@@ -29,7 +29,7 @@ const steps: FormStepProps[] = [
 
 export function CreateDigitalCertification() {
   const { activeStep, setActiveStep } = useSteps({
-    index: 1,
+    index: 0,
     count: steps.length,
   });
 
