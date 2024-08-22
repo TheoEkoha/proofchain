@@ -46,15 +46,11 @@ import CW3BDImage from "../assets/images/CW3BD.webp";
 import { skillTags } from "../utils/skills";
 import { chain, wallets } from "../utils/wallet";
 import { useWalletInfo } from "../services/wallet.query";
+import { Connect } from "../components/Connect/ConnectButton.component";
 
 export const LandingPage = () => {
-  const { address, chainId, isAddressLoading, isChainIdLoading } =
-    useWalletInfo();
+  useWalletInfo();
 
-  // console.log("address -> ", address);
-  // console.log("chainId -> ", chainId);
-  // console.log("isAddressLoading -> ", isAddressLoading);
-  // console.log("isChainIdLoading -> ", isChainIdLoading);
   return (
     <>
       {" "}
@@ -258,17 +254,7 @@ export const LandingPage = () => {
             <Stack textAlign="center" alignContent={"center"}>
               <Text fontSize="sm">and more...</Text>
               <Box mt={5} alignContent={"center"} maxWidth={"100%"}>
-                <ConnectButton
-                  client={client}
-                  chain={chain}
-                  wallets={wallets}
-                  connectButton={{ label: "Get started now !" }}
-                  theme={"dark"}
-                  connectModal={{
-                    size: "wide",
-                    showThirdwebBranding: false,
-                  }}
-                />
+                <Connect label={"Get started now !"} />
               </Box>
             </Stack>
             <Box></Box>

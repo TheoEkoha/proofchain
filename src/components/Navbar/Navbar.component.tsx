@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { Link, Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
+import {
+  Link,
+  Box,
+  Flex,
+  Text,
+  Button,
+  Stack,
+  useToast,
+} from "@chakra-ui/react";
 import { ConnectButton } from "thirdweb/react";
 import { createWallet, inAppWallet, walletConnect } from "thirdweb/wallets";
 import { chain, wallets } from "../../utils/wallet";
 import { client } from "../../client";
+import { Connect } from "../Connect/ConnectButton.component";
 
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +68,8 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
 };
 
 const MenuLinks = ({ isOpen }) => {
+  const toast = useToast();
+
   return (
     <Box
       display={{ base: isOpen ? "block" : "none", md: "block" }}
@@ -74,20 +85,18 @@ const MenuLinks = ({ isOpen }) => {
       >
         <Stack direction={["column", "row"]} spacing={8} align="center">
           <MenuItem to="/">Home</MenuItem>
+          <MenuItem
+            // onOpen={() => {
+            //   console.log("je m'ouvre");
+            // }}
+            to="/dashboard"
+          >
+            Dashboard{" "}
+          </MenuItem>
           <MenuItem to="/about">About </MenuItem>
           <MenuItem to="/features">Features </MenuItem>
-          <MenuItem to="/dashboard">Dashboard </MenuItem>
         </Stack>
-        <ConnectButton
-          client={client}
-          chain={chain}
-          wallets={wallets}
-          theme={"dark"}
-          connectModal={{
-            size: "wide",
-            showThirdwebBranding: false,
-          }}
-        />
+        <Connect />
       </Stack>
     </Box>
   );

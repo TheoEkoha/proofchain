@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useActiveWallet } from "thirdweb/react";
 import { useQueryClient, useQuery, QueryClient } from "@tanstack/react-query";
+import { redirect } from "@tanstack/react-router";
 
 const LOCAL_STORAGE_KEY_ADDRESS = "thirdweb:active-address";
 
 export function getUserConnected() {
-  return localStorage.getItem(LOCAL_STORAGE_KEY_ADDRESS);
+  if (localStorage.getItem("thirdweb:active-wallet-id")) {
+    return localStorage.getItem(LOCAL_STORAGE_KEY_ADDRESS);
+  }
+  return null;
 }
 
 function loadFromLocalStorage(queryClient: QueryClient) {
@@ -43,6 +47,16 @@ export function useWalletInfo() {
   useEffect(() => {
     if (wallet) {
       const account = wallet.getAccount();
+
+      const handleDisconnect = () => {
+        console.log("Wallet disconnected");
+        clearLocalStorage();
+        queryClient.setQueryData(["wallet", "address"], null);
+        setIsWalletConnected(false);
+      };
+
+      wallet.subscribe("disconnect", handleDisconnect);
+
       const initialAddress = account?.address || null;
 
       saveToLocalStorage(initialAddress);
