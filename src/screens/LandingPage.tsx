@@ -45,11 +45,16 @@ import CW3PImage from "../assets/images/CW3P.webp";
 import CW3BDImage from "../assets/images/CW3BD.webp";
 import { skillTags } from "../utils/skills";
 import { chain, wallets } from "../utils/wallet";
+import { useWalletInfo } from "../services/wallet.query";
 
 export const LandingPage = () => {
-  const account = useActiveAccount();
+  const { address, chainId, isAddressLoading, isChainIdLoading } =
+    useWalletInfo();
 
-  console.log("account -> ", account);
+  console.log("address -> ", address);
+  console.log("chainId -> ", chainId);
+  console.log("isAddressLoading -> ", isAddressLoading);
+  console.log("isChainIdLoading -> ", isChainIdLoading);
   return (
     <>
       {" "}

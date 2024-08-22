@@ -1,6 +1,9 @@
 import { createWallet, walletConnect, inAppWallet } from "thirdweb/wallets";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routes/routes";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const wallets = [
   createWallet("io.metamask"),
@@ -23,5 +26,9 @@ declare module "@tanstack/react-router" {
 }
 
 export function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
