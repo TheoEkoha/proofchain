@@ -51,10 +51,10 @@ export const LandingPage = () => {
   const { address, chainId, isAddressLoading, isChainIdLoading } =
     useWalletInfo();
 
-  console.log("address -> ", address);
-  console.log("chainId -> ", chainId);
-  console.log("isAddressLoading -> ", isAddressLoading);
-  console.log("isChainIdLoading -> ", isChainIdLoading);
+  // console.log("address -> ", address);
+  // console.log("chainId -> ", chainId);
+  // console.log("isAddressLoading -> ", isAddressLoading);
+  // console.log("isChainIdLoading -> ", isChainIdLoading);
   return (
     <>
       {" "}

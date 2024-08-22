@@ -76,7 +76,7 @@ const MenuLinks = ({ isOpen }) => {
           <MenuItem to="/">Home</MenuItem>
           <MenuItem to="/about">About </MenuItem>
           <MenuItem to="/features">Features </MenuItem>
-          <MenuItem to="/pricing">Pricing </MenuItem>
+          <MenuItem to="/dashboard">Dashboard </MenuItem>
         </Stack>
         <ConnectButton
           client={client}
