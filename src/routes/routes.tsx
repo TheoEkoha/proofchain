@@ -5,10 +5,13 @@ import {
   Outlet,
 } from "@tanstack/react-router";
 import { LandingPage } from "../screens/LandingPage";
-import { Dashboard } from "../screens/Dashboard";
+import { Dashboard, Layout } from "../layouts/Layout";
 import { About } from "../screens/About";
 import { getUserConnected } from "../services/wallet.query";
+import { Trending } from "../screens/Trending";
+import { Home } from "../screens/Home";
 
+// Composant de route protégée
 function ProtectedRoute({ children }) {
   const address = getUserConnected();
 
@@ -19,6 +22,7 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+// Route racine
 const rootRoute = createRootRoute({
   component: () => (
     <div>
@@ -27,22 +31,42 @@ const rootRoute = createRootRoute({
   ),
 });
 
+// Route pour la page d'accueil
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: LandingPage,
 });
 
+// Route pour Dashboard
 const dashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dashboard",
-  component: () => (
-    <ProtectedRoute>
-      <Dashboard />
-    </ProtectedRoute>
-  ),
+  component: () => {
+    const DashboardComponent = Layout(Home);
+    return (
+      <ProtectedRoute>
+        <DashboardComponent />
+      </ProtectedRoute>
+    );
+  },
 });
 
+// Route pour Dashboard
+const trendingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/trending",
+  component: () => {
+    const TrendingComponent = Layout(Trending);
+    return (
+      <ProtectedRoute>
+        <TrendingComponent />
+      </ProtectedRoute>
+    );
+  },
+});
+
+// Route pour About
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/about",
@@ -53,4 +77,5 @@ export const routeTree = rootRoute.addChildren([
   indexRoute,
   aboutRoute,
   dashboardRoute,
+  trendingRoute,
 ]);

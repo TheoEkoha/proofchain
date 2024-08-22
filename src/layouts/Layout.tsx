@@ -34,6 +34,7 @@ import {
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { Connect } from "../components/Connect/ConnectButton.component";
+import { Outlet } from "@tanstack/react-router";
 
 interface LinkItemProps {
   name: string;
@@ -174,32 +175,39 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   );
 };
 
-export const Dashboard = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export const Layout =
+  (Component) =>
+  ({ ...props }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-  return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: "none", md: "block" }}
-      />
-      <Drawer
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full"
-      >
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {/* Content */}
+    return (
+      <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+        {/* Sidebar Content */}
+        <SidebarContent
+          onClose={onClose}
+          display={{ base: "none", md: "block" }}
+        />
+
+        <Drawer
+          isOpen={isOpen}
+          placement="left"
+          onClose={onClose}
+          returnFocusOnClose={false}
+          onOverlayClick={onClose}
+          size="full"
+        >
+          <DrawerContent>
+            <SidebarContent onClose={onClose} />
+          </DrawerContent>
+        </Drawer>
+
+        {/* Mobile Navigation */}
+        <MobileNav onOpen={onOpen} />
+
+        {/* Main Content Area */}
+        <Box ml={{ base: 0, md: 60 }} p="4">
+          <Component {...props} />
+        </Box>
       </Box>
-    </Box>
-  );
-};
+    );
+  };
