@@ -8,7 +8,10 @@ import { LandingPage } from "../screens/LandingPage";
 import { Dashboard, Layout } from "../layouts/Layout";
 import { About } from "../screens/About";
 import { getUserConnected } from "../services/wallet.query";
-import { Trending } from "../screens/Trending";
+import {
+  CreateDigitalCertification,
+  Trending,
+} from "../screens/CreateDigitalCertification";
 import { Home } from "../screens/Home";
 
 // Composant de route protégée
@@ -55,12 +58,14 @@ const dashboardRoute = createRoute({
 // Route pour Dashboard
 const trendingRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/trending",
+  path: "/create-digital-certification",
   component: () => {
-    const TrendingComponent = Layout(Trending);
+    const CreateDigitalCertificationComponent = Layout(
+      CreateDigitalCertification,
+    );
     return (
       <ProtectedRoute>
-        <TrendingComponent />
+        <CreateDigitalCertificationComponent />
       </ProtectedRoute>
     );
   },

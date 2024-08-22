@@ -64,19 +64,21 @@ export const LandingPage = () => {
                 title="Certified Web 3.0 Professional (CW3P)"
                 image={CW3PImage}
                 status={CertificationStatus.CERTIFIED}
-                certifier="101 Blockchains"
+                emitor="101 Blockchains"
                 description={
                   "The Certified Web 3.0 Professional (CW3P) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3P-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."
                 }
+                displayDivider
               />
               <CertificationCard
                 title="Certified Web3 Blockchain Developer (CW3BD)"
                 image={CW3BDImage}
                 status={CertificationStatus.CERTIFIED}
-                certifier="101 Blockchains"
+                emitor="101 Blockchains"
                 description={
                   "The Certified Web3 Blockchain Developer (CW3BD) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3BD-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."
                 }
+                displayDivider
               />
             </SimpleGrid>
           </Stack>
@@ -119,10 +121,10 @@ export const LandingPage = () => {
                   <CardFooter>
                     <VStack align="start">
                       <HStack>
-                        <Tag variant={"solid"} colorScheme="teal">
+                        <Tag variant={"solid"} bgColor="purple.400">
                           Data
                         </Tag>
-                        <Tag variant={"solid"} colorScheme="pink">
+                        <Tag variant={"solid"} bgColor="red.500">
                           DevOps
                         </Tag>
                       </HStack>

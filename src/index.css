@@ -15,6 +15,16 @@
   font-variation-settings: "slnt" 0;
 }
 
+/* styles.css */
+.tagWrapContainer {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 4; /* Limite le nombre de lignes visibles */
+  white-space: normal; /* Permet le retour à la ligne */
+}
+
 @layer base {
   body {
     @apply bg-zinc-950 text-neutral-200;
