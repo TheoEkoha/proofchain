@@ -1,8 +1,6 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routes/routes";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import { useWalletInfo } from "thirdweb/react";
 
 const router = createRouter({ routeTree });
 
@@ -13,9 +11,6 @@ declare module "@tanstack/react-router" {
 }
 
 export function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
+  useWalletInfo();
+  return <RouterProvider router={router} />;
 }

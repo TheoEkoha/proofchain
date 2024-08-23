@@ -41,7 +41,7 @@ export const UploadForm = (props: FormStepProps) => {
         <Input
           type="file"
           id="image"
-          accept="image/jpeg, image/png, image/webp"
+          accept="image/*"
           {...register("image", { required: "Image is required" })}
           focusBorderColor="brand.400"
           shadow="sm"

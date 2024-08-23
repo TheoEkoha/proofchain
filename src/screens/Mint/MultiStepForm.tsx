@@ -4,6 +4,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { DigitalInformationForm } from "./DigitalInformationForm";
 import { UploadForm } from "./UploadForm";
 import { MintForm } from "./MintForm";
+import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
 
 export interface FormStepProps {
   title?: string;
@@ -17,6 +18,18 @@ export interface MultiStepFormProps {
   setStep: (step: number) => void;
 }
 
+interface MultiStepFormData {
+  firstName: string;
+  lastName: string;
+  title: string;
+  description: string;
+  tags: string[];
+  emitor: string;
+  dateOfObtention: string;
+  file: File;
+  image: File;
+}
+
 export default function MultiStepForm({
   step,
   steps,
@@ -24,9 +37,42 @@ export default function MultiStepForm({
 }: MultiStepFormProps) {
   const methods = useForm();
   const { trigger, handleSubmit } = methods;
+  const { mutateAsync: upload, isLoading } = useStorageUpload();
 
-  const onSubmit = (data: any) => {
+  const [fileUris, setFileUris] = useState<{
+    fileUri: string;
+    imageUri: string;
+  } | null>(null);
+
+  const uploadToIpfs = async (file: File, image: File) => {
+    try {
+      const uris = await upload({
+        data: [file, image],
+        options: { uploadWithGatewayUrl: true },
+      });
+
+      const fileJson = uris?.[0];
+      const reponseFile = await fetch(fileJson);
+      const dataFile = await reponseFile.json();
+
+      const imageJson = uris?.[1];
+      const reponseImage = await fetch(imageJson);
+      const dataImage = await reponseImage.json();
+
+      console.log("Image URI  -> ", uris[1]);
+      console.log("Image URI FINAL -> ", dataFile["0"]);
+      setFileUris({
+        imageUri: dataImage ? dataImage["0"] : null,
+        fileUri: dataFile ? dataFile["0"] : null,
+      });
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
+  };
+
+  const onSubmit = (data: MultiStepFormData) => {
     console.log("MintformData", data);
+    uploadToIpfs(data.file, data.image);
     // Vous pouvez gérer l'envoi des données ici
   };
 
@@ -61,6 +107,7 @@ export default function MultiStepForm({
             <Flex>
               <Button
                 onClick={() => setStep(step - 1)}
+                isLoading={isLoading}
                 isDisabled={step === 0}
                 colorScheme="gray"
                 variant="solid"
@@ -80,7 +127,13 @@ export default function MultiStepForm({
               </Button>
             </Flex>
             {step === 2 && (
-              <Button w="7rem" colorScheme="teal" variant="solid" type="submit">
+              <Button
+                isLoading={isLoading}
+                w="7rem"
+                colorScheme="teal"
+                variant="solid"
+                type="submit"
+              >
                 Submit
               </Button>
             )}

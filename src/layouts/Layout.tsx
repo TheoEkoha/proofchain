@@ -64,8 +64,6 @@ const LinkItems: Array<LinkItemProps> = [
     icon: FiTrendingUp,
   },
   { name: "Explore", to: "/explore", icon: FiCompass },
-  { name: "Favourites", to: "/", icon: FiStar },
-  { name: "Settings", to: "/", icon: FiSettings },
 ];
 
 export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {

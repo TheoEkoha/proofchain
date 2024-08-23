@@ -9,16 +9,18 @@ interface ConnectProps {
 export const Connect = (props: ConnectProps) => {
   const { label } = props;
   return (
-    <ConnectButton
-      client={client}
-      chain={chain}
-      wallets={wallets}
-      connectButton={{ label: label }}
-      theme={"dark"}
-      connectModal={{
-        size: "wide",
-        showThirdwebBranding: false,
-      }}
-    />
+    <div>
+      <ConnectButton
+        client={client}
+        chain={chain}
+        wallets={wallets}
+        connectButton={{ label: label }}
+        theme={"dark"}
+        connectModal={{
+          size: "wide",
+          showThirdwebBranding: false,
+        }}
+      />
+    </div>
   );
 };
