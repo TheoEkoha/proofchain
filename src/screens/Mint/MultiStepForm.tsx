@@ -1,10 +1,19 @@
-import { useState } from "react";
+import React from "react";
 import { Box, ButtonGroup, Button, Flex } from "@chakra-ui/react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import { DigitalInformationForm } from "./DigitalInformationForm";
 import { UploadForm } from "./UploadForm";
 import { MintForm } from "./MintForm";
-import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
+import {
+  useAddress,
+  useContract,
+  useContractRead,
+  useContractWrite,
+  useStorageUpload,
+} from "@thirdweb-dev/react";
+
+const smartContractAddressSepolia = import.meta.env
+  .VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
 
 export interface FormStepProps {
   title?: string;
@@ -28,6 +37,7 @@ interface MultiStepFormData {
   dateOfObtention: string;
   file: File;
   image: File;
+  identifiant: string;
 }
 
 export default function MultiStepForm({
@@ -35,14 +45,17 @@ export default function MultiStepForm({
   steps,
   setStep,
 }: MultiStepFormProps) {
-  const methods = useForm();
+  const methods = useForm<MultiStepFormData>();
   const { trigger, handleSubmit } = methods;
-  const { mutateAsync: upload, isLoading } = useStorageUpload();
+  const { watch } = useFormContext<MultiStepFormData>(); // Accès au contexte du formulaire
+  const address = useAddress();
 
-  const [fileUris, setFileUris] = useState<{
-    fileUri: string;
-    imageUri: string;
-  } | null>(null);
+  const { contract, isLoading: contractLoading } = useContract(
+    smartContractAddressSepolia,
+  );
+  const { data: contractName } = useContractRead(contract, "name");
+  const { mutateAsync: mint } = useContractWrite(contract, "mint");
+  const { mutateAsync: upload, isLoading: uploadLoading } = useStorageUpload();
 
   const uploadToIpfs = async (file: File, image: File) => {
     try {
@@ -50,96 +63,123 @@ export default function MultiStepForm({
         data: [file, image],
         options: { uploadWithGatewayUrl: true },
       });
-
-      const fileJson = uris?.[0];
-      const reponseFile = await fetch(fileJson);
-      const dataFile = await reponseFile.json();
-
-      const imageJson = uris?.[1];
-      const reponseImage = await fetch(imageJson);
-      const dataImage = await reponseImage.json();
-
-      console.log("Image URI  -> ", uris[1]);
-      console.log("Image URI FINAL -> ", dataFile["0"]);
-      setFileUris({
-        imageUri: dataImage ? dataImage["0"] : null,
-        fileUri: dataFile ? dataFile["0"] : null,
-      });
+      const fileUri = uris[0];
+      const imageUri = uris[1];
+      console.log("uploaded");
+      return { fileUri, imageUri };
     } catch (error) {
       console.error("Upload failed:", error);
+      return { fileUri: null, imageUri: null };
     }
   };
 
-  const onSubmit = (data: MultiStepFormData) => {
-    console.log("MintformData", data);
-    uploadToIpfs(data.file, data.image);
-    // Vous pouvez gérer l'envoi des données ici
+  const handleMint = async () => {
+    const data = watch(); // Obtenez les données actuelles du formulaire
+    if (!contract || !address || !data) {
+      console.error("Missing contract, address, or formData");
+      return;
+    }
+
+    try {
+      console.log("before upload ipfs");
+      const { fileUri, imageUri } = await uploadToIpfs(data.file, data.image);
+
+      const metadata = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        title: data.title,
+        description: data.description,
+        tags: data.tags,
+        emitor: data.emitor,
+        dateOfObtention: data.dateOfObtention,
+        file: fileUri || "",
+        image: imageUri || "",
+        identifiant: data.identifiant,
+      };
+
+      const metadataJSON = JSON.stringify(metadata);
+      console.log(metadataJSON);
+
+      const result = await mint({
+        args: [address, metadataJSON],
+      });
+
+      console.log("Transaction réussie:", result);
+    } catch (err) {
+      console.error("Erreur lors de la mint:", err);
+    }
+  };
+
+  const onSubmit = async (data: MultiStepFormData) => {
+    console.log("Form Data received in onSubmit:", data); // Débogage
   };
 
   const handleNext = async () => {
-    const isValid = await trigger(); // Valide le formulaire en cours
+    const isValid = await trigger(); // Valider le formulaire actuel
     if (isValid) {
-      setStep(step + 1);
+      if (step === 2) {
+        await handleMint(); // Appeler handleMint uniquement à la dernière étape
+      } else {
+        setStep(step + 1); // Passer à l'étape suivante
+      }
     }
   };
 
   return (
-    <FormProvider {...methods}>
-      <Box
-        borderWidth="1px"
-        rounded="lg"
-        shadow="1px 1px 3px rgba(0,0,0,0.3)"
-        maxWidth={800}
-        p={6}
-        m="10px auto"
-        as="form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {step === 0 ? (
-          <DigitalInformationForm description={steps[step].description} />
-        ) : step === 1 ? (
-          <UploadForm description={steps[step].description} />
-        ) : (
-          <MintForm description={steps[step].description} />
-        )}
-        <ButtonGroup mt="5%" w="100%">
-          <Flex w="100%" justifyContent="space-between">
-            <Flex>
+    <Box
+      borderWidth="1px"
+      rounded="lg"
+      shadow="1px 1px 3px rgba(0,0,0,0.3)"
+      maxWidth={800}
+      p={6}
+      m="10px auto"
+      as="form"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      {step === 0 ? (
+        <DigitalInformationForm description={steps[step].description} />
+      ) : step === 1 ? (
+        <UploadForm description={steps[step].description} />
+      ) : (
+        <MintForm description={steps[step].description} />
+      )}
+      <ButtonGroup mt="5%" w="100%">
+        <Flex w="100%" justifyContent="space-between">
+          <Flex>
+            <Button
+              onClick={() => setStep(step - 1)}
+              colorScheme="gray"
+              variant="solid"
+              w="7rem"
+              mr="5%"
+            >
+              Back
+            </Button>
+            <Button
+              w="7rem"
+              isDisabled={step === 2}
+              colorScheme="teal"
+              variant="outline"
+              onClick={handleNext}
+            >
+              Next
+            </Button>
+          </Flex>
+
+          {step === 2 && (
+            <Flex direction="column" align="center">
               <Button
-                onClick={() => setStep(step - 1)}
-                isLoading={isLoading}
-                isDisabled={step === 0}
-                colorScheme="gray"
-                variant="solid"
-                w="7rem"
-                mr="5%"
-              >
-                Back
-              </Button>
-              <Button
-                w="7rem"
-                isDisabled={step === 2}
+                isLoading={contractLoading || uploadLoading} // Indicateur de chargement
+                onClick={handleMint}
                 colorScheme="teal"
-                variant="outline"
-                onClick={handleNext} // On appelle handleNext ici
+                variant="solid"
               >
-                Next
+                Mint NFT
               </Button>
             </Flex>
-            {step === 2 && (
-              <Button
-                isLoading={isLoading}
-                w="7rem"
-                colorScheme="teal"
-                variant="solid"
-                type="submit"
-              >
-                Submit
-              </Button>
-            )}
-          </Flex>
-        </ButtonGroup>
-      </Box>
-    </FormProvider>
+          )}
+        </Flex>
+      </ButtonGroup>
+    </Box>
   );
 }

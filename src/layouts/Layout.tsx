@@ -35,6 +35,7 @@ import {
 import { IconType } from "react-icons";
 import { Connect } from "../components/Connect/ConnectButton.component";
 import { Outlet } from "@tanstack/react-router";
+import { useAddress } from "@thirdweb-dev/react";
 
 interface LinkItemProps {
   name: string;

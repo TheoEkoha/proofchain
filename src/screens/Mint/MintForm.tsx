@@ -26,11 +26,16 @@ export const MintForm = (props: FormStepProps) => {
   // Watch the file field to get the file data
   const file = watch("file");
   const image = watch("image");
-  const certificationTitle = "Web 3 developper"; //watch("certificationTitle");
-  const certificationDescription =
-    "The Certified Web 3.0 Professional (CW3P) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3P-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."; //watch("certificationDescription");
+
+  //const certificationTitle = "Web 3 developper";
+  const certificationTitle = watch("certificationTitle");
+
+  //const certificationDescription = "The Certified Web 3.0 Professional (CW3P) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3P-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications.";
+  const certificationDescription = watch("certificationDescription");
+
   const tags = watch("tags");
-  const emitor = "Phantom"; //watch("emitor");
+  //const emitor = "Phantom";
+  const emitor = watch("emitor");
 
   return (
     <>
@@ -54,7 +59,10 @@ export const MintForm = (props: FormStepProps) => {
       <Box display={"flex"} justifyContent={"center"} mt={"2%"}>
         <CertificationCard
           title={certificationTitle}
-          image={window.URL.createObjectURL(image[0])}
+          //image={window.URL.createObjectURL(image[0])}
+          image={
+            "https://bafybeibyi76ano76qoxb53ar3u4437eke5ekpo3m2mog3mn345o555oyja.ipfs.dweb.link/CW3BD%20screen.png"
+          }
           status={CertificationStatus.CERTIFIED}
           emitor={emitor}
           tags={tags}

@@ -1,0 +1,39 @@
+require("dotenv").config();
+require("@matterlabs/hardhat-zksync-solc");
+
+const ALCHEMY_API_URL = process.env.ALCHEMY_API_URL || "";
+const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
+
+/** @type import('hardhat/config').HardhatUserConfig */
+module.exports = {
+  zksolc: {
+    version: "1.3.9",
+    compilerSource: "binary",
+    settings: {
+      optimizer: {
+        enabled: true,
+      },
+    },
+  },
+  networks: {
+    arbitrum: {
+      url: ALCHEMY_API_URL, // URL RPC pour Arbitrum Sepolia
+      accounts: [PRIVATE_KEY]
+    }
+  },
+  paths: {
+    artifacts: "./artifacts-zk",
+    cache: "./cache-zk",
+    sources: "./contracts",
+    tests: "./test",
+  },
+  solidity: {
+    version: "0.8.17",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
+};

@@ -79,12 +79,7 @@ const CertificationCard = (props: CertificationCardProps) => {
             <Wrap spacing={4} shouldWrapChildren>
               {tags?.map((tag) => (
                 <WrapItem key={tag.value}>
-                  <Tag
-                    size={"md"}
-                    variant="solid"
-                    bg={tag.color}
-                    color={tag.color.includes("yellow") ? "black" : "white"}
-                  >
+                  <Tag size={"md"} variant="solid" bg={tag.color}>
                     {tag.label}
                   </Tag>
                 </WrapItem>

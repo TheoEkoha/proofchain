@@ -103,6 +103,22 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
         </FormErrorMessage>
       </FormControl>
 
+      <FormControl isInvalid={!!errors.identifiant} mb="4">
+        <FormLabel htmlFor="identifiant" fontWeight={"normal"}>
+          Identifiant
+        </FormLabel>
+        <InputGroup size="md">
+          <Input
+            id="identifiant"
+            placeholder="CE1632921337"
+            {...register("identifiant", {
+              required: "Identifiant is required",
+            })}
+          />
+        </InputGroup>
+        <FormErrorMessage>{errors.identifiant?.message}</FormErrorMessage>
+      </FormControl>
+
       <FormControl isInvalid={!!errors.tags} mb="4">
         <FormLabel>Tag(s)</FormLabel>
         <Controller

@@ -12,6 +12,7 @@ import {
   useSteps,
 } from "@chakra-ui/react";
 import MultiStepForm, { FormStepProps } from "./Mint/MultiStepForm";
+import { useForm, FormProvider } from "react-hook-form";
 
 const steps: FormStepProps[] = [
   {
@@ -28,8 +29,23 @@ const steps: FormStepProps[] = [
 ];
 
 export function CreateDigitalCertification() {
+  const methods = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      title: "",
+      description: "",
+      tags: [],
+      emitor: "",
+      dateOfObtention: "",
+      file: null,
+      image: null,
+      identifiant: "",
+    },
+  });
+
   const { activeStep, setActiveStep } = useSteps({
-    index: 0,
+    index: 2,
     count: steps.length,
   });
 
@@ -56,11 +72,13 @@ export function CreateDigitalCertification() {
         ))}
       </Stepper>
       <Box mt={10}>
-        <MultiStepForm
-          steps={steps}
-          step={activeStep}
-          setStep={setActiveStep} // Correctly set this to setStep
-        />
+        <FormProvider {...methods}>
+          <MultiStepForm
+            steps={steps}
+            step={activeStep}
+            setStep={setActiveStep} // Correctly set this to setStep
+          />
+        </FormProvider>
       </Box>
     </div>
   );
