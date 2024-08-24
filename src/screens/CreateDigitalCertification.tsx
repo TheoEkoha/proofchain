@@ -29,23 +29,10 @@ const steps: FormStepProps[] = [
 ];
 
 export function CreateDigitalCertification() {
-  const methods = useForm({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      title: "",
-      description: "",
-      tags: [],
-      emitor: "",
-      dateOfObtention: "",
-      file: null,
-      image: null,
-      identifiant: "",
-    },
-  });
+  const methods = useForm();
 
   const { activeStep, setActiveStep } = useSteps({
-    index: 2,
+    index: 0,
     count: steps.length,
   });
 
@@ -76,7 +63,7 @@ export function CreateDigitalCertification() {
           <MultiStepForm
             steps={steps}
             step={activeStep}
-            setStep={setActiveStep} // Correctly set this to setStep
+            setStep={setActiveStep}
           />
         </FormProvider>
       </Box>

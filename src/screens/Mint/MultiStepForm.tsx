@@ -1,5 +1,12 @@
-import React from "react";
-import { Box, ButtonGroup, Button, Flex } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Box,
+  ButtonGroup,
+  Button,
+  Flex,
+  Toast,
+  useToast,
+} from "@chakra-ui/react";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import { DigitalInformationForm } from "./DigitalInformationForm";
 import { UploadForm } from "./UploadForm";
@@ -7,19 +14,12 @@ import { MintForm } from "./MintForm";
 import {
   useAddress,
   useContract,
-  useContractRead,
   useContractWrite,
   useStorageUpload,
 } from "@thirdweb-dev/react";
 
 const smartContractAddressSepolia = import.meta.env
   .VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
-
-export interface FormStepProps {
-  title?: string;
-  subtitle?: string;
-  description: string;
-}
 
 export interface MultiStepFormProps {
   step: number;
@@ -35,8 +35,8 @@ interface MultiStepFormData {
   tags: string[];
   emitor: string;
   dateOfObtention: string;
-  file: File;
-  image: File;
+  file: File | null;
+  image: File | null;
   identifiant: string;
 }
 
@@ -45,28 +45,30 @@ export default function MultiStepForm({
   steps,
   setStep,
 }: MultiStepFormProps) {
-  const methods = useForm<MultiStepFormData>();
-  const { trigger, handleSubmit } = methods;
-  const { watch } = useFormContext<MultiStepFormData>(); // Accès au contexte du formulaire
+  const methods = useFormContext<MultiStepFormData>();
+  const { trigger, watch } = methods;
   const address = useAddress();
+  const [isMinting, setIsMinting] = useState(false);
+  const toast = useToast();
 
   const { contract, isLoading: contractLoading } = useContract(
     smartContractAddressSepolia,
   );
-  const { data: contractName } = useContractRead(contract, "name");
   const { mutateAsync: mint } = useContractWrite(contract, "mint");
   const { mutateAsync: upload, isLoading: uploadLoading } = useStorageUpload();
 
-  const uploadToIpfs = async (file: File, image: File) => {
+  const uploadToIpfs = async (file: File | null, image: File | null) => {
+    if (!file || !image) {
+      console.error("File or Image not provided");
+      return { fileUri: null, imageUri: null };
+    }
+
     try {
       const uris = await upload({
         data: [file, image],
         options: { uploadWithGatewayUrl: true },
       });
-      const fileUri = uris[0];
-      const imageUri = uris[1];
-      console.log("uploaded");
-      return { fileUri, imageUri };
+      return { fileUri: uris[0], imageUri: uris[1] };
     } catch (error) {
       console.error("Upload failed:", error);
       return { fileUri: null, imageUri: null };
@@ -74,14 +76,13 @@ export default function MultiStepForm({
   };
 
   const handleMint = async () => {
-    const data = watch(); // Obtenez les données actuelles du formulaire
+    const data = watch();
     if (!contract || !address || !data) {
       console.error("Missing contract, address, or formData");
       return;
     }
 
     try {
-      console.log("before upload ipfs");
       const { fileUri, imageUri } = await uploadToIpfs(data.file, data.image);
 
       const metadata = {
@@ -97,21 +98,33 @@ export default function MultiStepForm({
         identifiant: data.identifiant,
       };
 
-      const metadataJSON = JSON.stringify(metadata);
-      console.log(metadataJSON);
-
+      setIsMinting(true);
       const result = await mint({
-        args: [address, metadataJSON],
+        args: [address, JSON.stringify(metadata)],
       });
+      setIsMinting(false);
 
-      console.log("Transaction réussie:", result);
+      console.log("r:", result);
+      toast({
+        title: "Success!",
+        description: "The SBT has been successfully minted.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-right",
+      });
     } catch (err) {
-      console.error("Erreur lors de la mint:", err);
+      setIsMinting(false);
+      toast({
+        title: "Error!",
+        description: "There was an error while minting the SBT.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+      console.error("e:", err);
     }
-  };
-
-  const onSubmit = async (data: MultiStepFormData) => {
-    console.log("Form Data received in onSubmit:", data); // Débogage
   };
 
   const handleNext = async () => {
@@ -125,6 +138,13 @@ export default function MultiStepForm({
     }
   };
 
+  const getButtonText = () => {
+    if (contractLoading) return "Loading";
+    if (uploadLoading) return "Upload loading";
+    if (isMinting) return "Transaction waiting";
+    return "";
+  };
+
   return (
     <Box
       borderWidth="1px"
@@ -134,7 +154,6 @@ export default function MultiStepForm({
       p={6}
       m="10px auto"
       as="form"
-      onSubmit={handleSubmit(onSubmit)}
     >
       {step === 0 ? (
         <DigitalInformationForm description={steps[step].description} />
@@ -148,6 +167,7 @@ export default function MultiStepForm({
           <Flex>
             <Button
               onClick={() => setStep(step - 1)}
+              isLoading={contractLoading || uploadLoading || isMinting}
               colorScheme="gray"
               variant="solid"
               w="7rem"
@@ -155,26 +175,32 @@ export default function MultiStepForm({
             >
               Back
             </Button>
-            <Button
-              w="7rem"
-              isDisabled={step === 2}
-              colorScheme="teal"
-              variant="outline"
-              onClick={handleNext}
-            >
-              Next
-            </Button>
+            {step !== 2 && (
+              <Button
+                w="7rem"
+                isDisabled={step === 2}
+                colorScheme="teal"
+                variant="outline"
+                onClick={handleNext}
+              >
+                Next
+              </Button>
+            )}
           </Flex>
 
           {step === 2 && (
             <Flex direction="column" align="center">
               <Button
-                isLoading={contractLoading || uploadLoading} // Indicateur de chargement
+                isLoading={contractLoading || uploadLoading || isMinting}
                 onClick={handleMint}
-                colorScheme="teal"
+                bgColor={"teal.400"}
                 variant="solid"
+                spinnerPlacement="start"
+                textColor="white"
+                loadingText={getButtonText()}
+                style={{ whiteSpace: "nowrap" }}
               >
-                Mint NFT
+                Create
               </Button>
             </Flex>
           )}

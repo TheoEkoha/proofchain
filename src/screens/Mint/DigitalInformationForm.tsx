@@ -8,9 +8,7 @@ import {
   Flex,
   Highlight,
   Textarea,
-  GridItem,
   FormErrorMessage,
-  Box,
 } from "@chakra-ui/react";
 import { useFormContext, Controller } from "react-hook-form";
 import { FormStepProps } from "./MultiStepForm";
@@ -67,7 +65,7 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
         </FormControl>
       </Flex>
 
-      <FormControl isInvalid={!!errors.certificationTitle} mb="4">
+      <FormControl isInvalid={!!errors.title} mb="4">
         <FormLabel htmlFor="certification-title" fontWeight={"normal"}>
           Title of certification
         </FormLabel>
@@ -75,17 +73,13 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
           <Input
             id="certification-title"
             placeholder="Certified Full-Stack Web Developer"
-            {...register("certificationTitle", {
-              required: "Title is required",
-            })}
+            {...register("title", { required: "Title is required" })}
           />
         </InputGroup>
-        <FormErrorMessage>
-          {errors.certificationTitle?.message}
-        </FormErrorMessage>
+        <FormErrorMessage>{errors.title?.message}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isInvalid={!!errors.certificationDescription} mb="4">
+      <FormControl isInvalid={!!errors.description} mb="4">
         <FormLabel htmlFor="certification-description" fontWeight={"normal"}>
           Description of certification
         </FormLabel>
@@ -93,14 +87,12 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
           <Textarea
             id="certification-description"
             placeholder="This certification validates your expertise in designing, developing..."
-            {...register("certificationDescription", {
+            {...register("description", {
               required: "Description is required",
             })}
           />
         </InputGroup>
-        <FormErrorMessage>
-          {errors.certificationDescription?.message}
-        </FormErrorMessage>
+        <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={!!errors.identifiant} mb="4">
@@ -189,7 +181,6 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
             placeholder="Date of obtention"
             size="md"
             type="date"
-            lang="uk"
             {...register("dateOfObtention", { required: "Date is required" })}
           />
           <FormErrorMessage>{errors.dateOfObtention?.message}</FormErrorMessage>

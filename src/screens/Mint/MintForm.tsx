@@ -28,10 +28,10 @@ export const MintForm = (props: FormStepProps) => {
   const image = watch("image");
 
   //const certificationTitle = "Web 3 developper";
-  const certificationTitle = watch("certificationTitle");
+  const certificationTitle = watch("title");
 
   //const certificationDescription = "The Certified Web 3.0 Professional (CW3P) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3P-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications.";
-  const certificationDescription = watch("certificationDescription");
+  const certificationDescription = watch("description");
 
   const tags = watch("tags");
   //const emitor = "Phantom";
