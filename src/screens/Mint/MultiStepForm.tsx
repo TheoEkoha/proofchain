@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import {
-  Box,
-  ButtonGroup,
-  Button,
-  Flex,
-  Toast,
-  useToast,
-} from "@chakra-ui/react";
-import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import { Box, ButtonGroup, Button, Flex, useToast } from "@chakra-ui/react";
+import { useFormContext } from "react-hook-form";
 import { DigitalInformationForm } from "./DigitalInformationForm";
 import { UploadForm } from "./UploadForm";
 import { MintForm } from "./MintForm";
@@ -46,7 +39,7 @@ export default function MultiStepForm({
   setStep,
 }: MultiStepFormProps) {
   const methods = useFormContext<MultiStepFormData>();
-  const { trigger, watch } = methods;
+  const { trigger, watch, reset } = methods; // Ajout de `reset`
   const address = useAddress();
   const [isMinting, setIsMinting] = useState(false);
   const toast = useToast();
@@ -113,6 +106,9 @@ export default function MultiStepForm({
         isClosable: true,
         position: "bottom-right",
       });
+
+      reset(); // Réinitialiser le formulaire
+      setStep(0); // Rediriger vers l'étape 0
     } catch (err) {
       setIsMinting(false);
       toast({
@@ -165,16 +161,23 @@ export default function MultiStepForm({
       <ButtonGroup mt="5%" w="100%">
         <Flex w="100%" justifyContent="space-between">
           <Flex>
-            <Button
-              onClick={() => setStep(step - 1)}
-              isLoading={contractLoading || uploadLoading || isMinting}
-              colorScheme="gray"
-              variant="solid"
-              w="7rem"
-              mr="5%"
-            >
-              Back
-            </Button>
+            {step !== 0 && (
+              <Button
+                onClick={() => setStep(step - 1)}
+                isLoading={
+                  step === 2
+                    ? contractLoading || uploadLoading || isMinting
+                    : false
+                }
+                colorScheme="gray"
+                variant="solid"
+                w="7rem"
+                mr="5%"
+              >
+                Back
+              </Button>
+            )}
+
             {step !== 2 && (
               <Button
                 w="7rem"
