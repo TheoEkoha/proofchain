@@ -5,29 +5,28 @@ import {
   Image,
   Heading,
   Text,
-  HStack,
   Box,
   Stack,
   Divider,
   ButtonGroup,
   Button,
   CardFooter,
-  TagLabel,
-  TagRightIcon,
   Tag,
-  VStack,
   Wrap,
   WrapItem,
+  TagLabel,
+  TagRightIcon,
 } from "@chakra-ui/react";
 import { LuBadgeCheck } from "react-icons/lu";
 import { capitalize } from "lodash";
+import { skillTags } from "../../utils/skills";
 
 export const CertificationStatus = {
   CERTIFIED: "CERTIFIED",
   PENDING: "PENDING",
 };
 
-const displayStatus = (status) => {
+const displayStatus = (status: string) => {
   if (status === CertificationStatus.CERTIFIED) {
     return (
       <Tag size={"lg"} key={"lg"} variant="outline" colorScheme="blue">
@@ -38,6 +37,11 @@ const displayStatus = (status) => {
   }
 };
 
+const getTagDetails = (tagValue: string) => {
+  const tag = skillTags.find((t) => t.value === tagValue);
+  return tag || { value: tagValue, label: tagValue, color: "gray.500" }; // Valeur par défaut si non trouvé
+};
+
 interface CertificationCardProps {
   image: string;
   title: string;
@@ -45,11 +49,23 @@ interface CertificationCardProps {
   status: string;
   emitor: string;
   tags?: { value: string; label: string; color: string }[];
+  tagsValue?: string[];
   displayDivider?: boolean;
 }
+
 const CertificationCard = (props: CertificationCardProps) => {
-  const { image, title, description, status, emitor, tags, displayDivider } =
-    props;
+  const {
+    image,
+    title,
+    description,
+    status,
+    emitor,
+    tags,
+    tagsValue,
+    displayDivider,
+  } = props;
+
+  const displayedTags = tags || tagsValue?.map(getTagDetails);
 
   return (
     <Card maxW="sm" overflow="hidden">
@@ -77,13 +93,16 @@ const CertificationCard = (props: CertificationCardProps) => {
             lineHeight="1.5rem"
           >
             <Wrap spacing={4} shouldWrapChildren>
-              {tags?.map((tag) => (
-                <WrapItem key={tag.value}>
-                  <Tag size={"md"} variant="solid" bg={tag.color}>
-                    {tag.label}
-                  </Tag>
-                </WrapItem>
-              ))}
+              {displayedTags?.map((tag) => {
+                if (!(typeof tag.value === "object") && tag.value !== null)
+                  return (
+                    <WrapItem key={tag.label}>
+                      <Tag size={"md"} variant="solid" bg={tag.color}>
+                        {tag.label}
+                      </Tag>
+                    </WrapItem>
+                  );
+              })}
             </Wrap>
           </Box>
         </Stack>

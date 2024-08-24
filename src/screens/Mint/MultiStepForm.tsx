@@ -20,7 +20,7 @@ export interface MultiStepFormProps {
   setStep: (step: number) => void;
 }
 
-interface MultiStepFormData {
+export interface MultiStepFormData {
   firstName: string;
   lastName: string;
   title: string;
@@ -61,7 +61,19 @@ export default function MultiStepForm({
         data: [file, image],
         options: { uploadWithGatewayUrl: true },
       });
-      return { fileUri: uris[0], imageUri: uris[1] };
+
+      const fileJson = uris?.[0];
+      const reponseFile = await fetch(fileJson);
+      const dataFile = await reponseFile.json();
+
+      const imageJson = uris?.[1];
+      const reponseImage = await fetch(imageJson);
+      const dataImage = await reponseImage.json();
+
+      return {
+        imageUri: dataImage ? dataImage["0"] : null,
+        fileUri: dataFile ? dataFile["0"] : null,
+      };
     } catch (error) {
       console.error("Upload failed:", error);
       return { fileUri: null, imageUri: null };
@@ -107,8 +119,8 @@ export default function MultiStepForm({
         position: "bottom-right",
       });
 
-      reset(); // Réinitialiser le formulaire
-      setStep(0); // Rediriger vers l'étape 0
+      reset();
+      setStep(0);
     } catch (err) {
       setIsMinting(false);
       toast({

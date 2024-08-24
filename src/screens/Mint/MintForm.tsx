@@ -59,10 +59,7 @@ export const MintForm = (props: FormStepProps) => {
       <Box display={"flex"} justifyContent={"center"} mt={"2%"}>
         <CertificationCard
           title={certificationTitle}
-          //image={window.URL.createObjectURL(image[0])}
-          image={
-            "https://bafybeibyi76ano76qoxb53ar3u4437eke5ekpo3m2mog3mn345o555oyja.ipfs.dweb.link/CW3BD%20screen.png"
-          }
+          image={window.URL.createObjectURL(image[0])}
           status={CertificationStatus.CERTIFIED}
           emitor={emitor}
           tags={tags}

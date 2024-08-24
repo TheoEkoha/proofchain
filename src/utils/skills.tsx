@@ -115,3 +115,8 @@ export const skillTags = [
   { value: "serverless", label: "Serverless", color: "purple.400" },
   { value: "api", label: "API", color: "green.200" },
 ];
+
+export const getSkillTagDetails = (tagValue: string) => {
+  const tag = skillTags.find((t) => t.value === tagValue);
+  return tag || { value: tagValue, label: tagValue, color: "gray.500" };
+};
