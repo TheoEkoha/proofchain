@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useContract, useAddress, useContractRead } from "@thirdweb-dev/react";
+import { useContract, useAddress } from "@thirdweb-dev/react";
 import { BigNumber } from "ethers";
-import { MultiStepFormData } from "./Mint/MultiStepForm";
 import CertificationCard, {
   CertificationStatus,
 } from "../components/Card/CertificationCard.component";
+import CertificationCardSkeleton from "../components/Card/CertificationCardSkeleton.component";
 import { Grid, GridItem } from "@chakra-ui/react";
 
 const smartContractAddressSepolia = import.meta.env
@@ -13,7 +13,7 @@ const smartContractAddressSepolia = import.meta.env
 interface Token {
   tokenId: string;
   owner: string;
-  metadata: MultiStepFormData;
+  metadata: TokenMetadata;
 }
 
 export interface TokenMetadata {
@@ -33,7 +33,7 @@ export const Home = () => {
   const { contract } = useContract(smartContractAddressSepolia);
   const address = useAddress();
   const [allTokens, setAllTokens] = useState<Token[]>([]);
-  const [userTokens, setUserTokens] = useState<Token[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchTokens = async () => {
@@ -45,35 +45,37 @@ export const Home = () => {
         const currentTokenId = currentTokenIdBigNumber.toNumber();
 
         const allTokensData = [];
-        const userTokensData = [];
-        console.log(currentTokenId);
 
         for (let tokenId = 0; tokenId < currentTokenId; tokenId++) {
           try {
-            const owner = await contract.call("ownerOf", [tokenId]);
-            const metadata = await contract.call("getTokenMetadata", [tokenId]);
+            const currentTokenState: [boolean] = await contract.call(
+              "getTokenState",
+              [tokenId],
+            );
+            if (currentTokenState[0]) {
+              const owner = await contract.call("ownerOf", [tokenId]);
+              const metadata = await contract.call("getTokenMetadata", [
+                tokenId,
+              ]);
 
-            const tokenData = {
-              tokenId,
-              owner,
-              metadata: JSON.parse(metadata) as TokenMetadata,
-            };
+              const tokenData = {
+                tokenId,
+                owner,
+                metadata: JSON.parse(metadata) as TokenMetadata,
+              };
 
-            allTokensData.push(tokenData);
-
-            if (owner === address) {
-              userTokensData.push(tokenData);
+              allTokensData.push(tokenData);
             }
           } catch (error) {
             console.error(`Failed to fetch token ${tokenId}:`, error);
           }
         }
 
-        console.log("-> ", allTokensData);
         setAllTokens(allTokensData);
-        setUserTokens(userTokensData);
       } catch (error) {
         console.error("Failed to fetch tokens:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -84,26 +86,24 @@ export const Home = () => {
     <div>
       <h2>All Minted Tokens</h2>
       <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-        {allTokens.map((token) => {
-          console.log(token.metadata.image);
-          return (
-            <GridItem w="100%">
-              {/* <p>{token.metadata.image}</p> */}
-              <CertificationCard
-                key={token.tokenId}
-                title={token.metadata.title}
-                image={token.metadata.image}
-                // image={
-                //   "https://bafybeibyi76ano76qoxb53ar3u4437eke5ekpo3m2mog3mn345o555oyja.ipfs.dweb.link/CW3BD%20screen.png"
-                // }
-                status={CertificationStatus.CERTIFIED}
-                emitor={token.metadata.emitor}
-                tagsValue={token.metadata.tags}
-                description={token.metadata.description}
-              />
-            </GridItem>
-          );
-        })}
+        {isLoading
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <GridItem key={index} w="100%">
+                <CertificationCardSkeleton />
+              </GridItem>
+            ))
+          : allTokens.map((token) => (
+              <GridItem key={token.tokenId} w="100%">
+                <CertificationCard
+                  title={token.metadata.title}
+                  image={token.metadata.image}
+                  status={CertificationStatus.CERTIFIED}
+                  emitor={token.metadata.emitor}
+                  tagsValue={token.metadata.tags}
+                  description={token.metadata.description}
+                />
+              </GridItem>
+            ))}
       </Grid>
     </div>
   );

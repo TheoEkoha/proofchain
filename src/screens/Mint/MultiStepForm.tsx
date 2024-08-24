@@ -102,7 +102,6 @@ export default function MultiStepForm({
         image: imageUri || "",
         identifiant: data.identifiant,
       };
-
       setIsMinting(true);
       const result = await mint({
         args: [address, JSON.stringify(metadata)],
@@ -118,9 +117,8 @@ export default function MultiStepForm({
         isClosable: true,
         position: "bottom-right",
       });
-
-      reset();
       setStep(0);
+      reset();
     } catch (err) {
       setIsMinting(false);
       toast({
@@ -136,6 +134,8 @@ export default function MultiStepForm({
   };
 
   const handleNext = async () => {
+    const allField = await watch();
+    console.log(allField);
     const isValid = await trigger(); // Valider le formulaire actuel
     if (isValid) {
       if (step === 2) {

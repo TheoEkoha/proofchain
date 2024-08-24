@@ -17,11 +17,6 @@ contract ProofchainSBT is ERC721, Ownable {
 
     function mint(address to, string memory metadataJSON) public onlyOwner {
         uint256 tokenId = _currentTokenId;
-        // require(
-        //     balanceOf(to) == 0,
-        //     "ProofchainSBT: Each address can only own one token"
-        // );
-
         _safeMint(to, tokenId);
         _tokenMetadata[tokenId] = metadataJSON;
         _currentTokenId++;
@@ -34,16 +29,16 @@ contract ProofchainSBT is ERC721, Ownable {
             "ProofchainSBT: Only token owner or contract owner can revoke"
         );
 
-        _revoked[tokenId] = true;
         _burn(tokenId);
+        _revoked[tokenId] = true;
         delete _tokenMetadata[tokenId];
     }
 
     function deleteToken(uint256 tokenId) public onlyOwner {
         require(_exists(tokenId), "ProofchainSBT: Token does not exist");
 
-        _revoked[tokenId] = true;
         _burn(tokenId);
+        _revoked[tokenId] = true;
         delete _tokenMetadata[tokenId];
     }
 
@@ -70,5 +65,10 @@ contract ProofchainSBT is ERC721, Ownable {
 
     function getCurrentTokenId() public view returns (uint256) {
         return _currentTokenId;
+    }
+
+    function getTokenState(uint256 tokenId) public view returns (bool exists, bool revoked) {
+        exists = _exists(tokenId);
+        revoked = _revoked[tokenId];
     }
 }

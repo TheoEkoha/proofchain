@@ -62,7 +62,7 @@ export const MintForm = (props: FormStepProps) => {
           image={window.URL.createObjectURL(image[0])}
           status={CertificationStatus.CERTIFIED}
           emitor={emitor}
-          tags={tags}
+          tagsValue={tags}
           description={certificationDescription}
         />
       </Box>

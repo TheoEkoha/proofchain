@@ -22,6 +22,13 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
     formState: { errors },
   } = useFormContext();
 
+  // Convertir skillTags en format adapté pour chakra-react-select
+  const selectOptions = skillTags.map((tag) => ({
+    value: tag.value,
+    label: tag.label,
+    color: tag.color,
+  }));
+
   return (
     <>
       <Heading
@@ -120,15 +127,21 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
           render={({ field: { onChange, onBlur, value, ref } }) => (
             <Select
               isMulti
-              selectedOptionStyle="color"
-              name="tags"
-              options={skillTags}
+              options={selectOptions}
               tagVariant="solid"
               placeholder="Select some skills..."
               closeMenuOnSelect={false}
-              onChange={onChange}
+              onChange={(selectedOptions) => {
+                onChange(
+                  selectedOptions
+                    ? selectedOptions.map((option) => option.value)
+                    : [],
+                );
+              }}
               onBlur={onBlur}
-              value={value}
+              value={selectOptions.filter((option) =>
+                value?.includes(option.value),
+              )}
               ref={ref}
               chakraStyles={{
                 container: (provided) => ({
