@@ -24,8 +24,9 @@ import {
 } from "@chakra-ui/react";
 import {
   FiHome,
-  FiTrendingUp,
+  FiBookOpen,
   FiCompass,
+  FiEdit,
   FiStar,
   FiSettings,
   FiMenu,
@@ -62,9 +63,9 @@ const LinkItems: Array<LinkItemProps> = [
   {
     name: "Create certification",
     to: "/create-digital-certification",
-    icon: FiTrendingUp,
+    icon: FiEdit,
   },
-  { name: "Explore", to: "/explore", icon: FiCompass },
+  { name: "My certifications", to: "/explore", icon: FiBookOpen },
 ];
 
 export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {

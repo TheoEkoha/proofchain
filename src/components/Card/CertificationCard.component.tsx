@@ -71,7 +71,7 @@ const CertificationCard = (props: CertificationCardProps) => {
   const displayedTags = tags || tagsValue?.map(getTagDetails);
 
   return (
-    <Card maxW="sm" overflow="hidden">
+    <Card maxW="sm" h={"100%"} overflow="hidden">
       <CardBody>
         <Skeleton isLoaded={!isLoading}>
           <Image

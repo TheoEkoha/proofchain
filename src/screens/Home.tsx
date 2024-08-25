@@ -5,7 +5,7 @@ import CertificationCard, {
   CertificationStatus,
 } from "../components/Card/CertificationCard.component";
 import CertificationCardSkeleton from "../components/Card/CertificationCardSkeleton.component";
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem, Heading, Highlight } from "@chakra-ui/react";
 
 const smartContractAddressSepolia = import.meta.env
   .VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
@@ -84,7 +84,14 @@ export const Home = () => {
 
   return (
     <div>
-      <h2>All Minted Tokens</h2>
+      <Heading lineHeight="tall" pb={"2%"}>
+        <Highlight
+          query="minted"
+          styles={{ px: "2", py: "1", rounded: "full", bg: "red.100" }}
+        >
+          All minted certifications
+        </Highlight>
+      </Heading>
       <Grid templateColumns="repeat(4, 1fr)" gap={6}>
         {isLoading
           ? Array.from({ length: 4 }).map((_, index) => (
