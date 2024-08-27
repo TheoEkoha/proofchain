@@ -90,10 +90,10 @@ export const Home = () => {
     <div>
       <Heading lineHeight="tall" pb={"2%"}>
         <Highlight
-          query="minted"
+          query="claimed"
           styles={{ px: "2", py: "1", rounded: "full", bg: "blue.100" }}
         >
-          All minted certifications
+          ProofChain's claimed certificates
         </Highlight>
       </Heading>
       <Grid templateColumns="repeat(4, 1fr)" gap={6}>

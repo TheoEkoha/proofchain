@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Box, ButtonGroup, Button, Flex, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  ButtonGroup,
+  Button,
+  Flex,
+  useToast,
+  Alert,
+  AlertIcon,
+} from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 import { DigitalInformationForm } from "./DigitalInformationForm";
 import { UploadForm } from "./UploadForm";
@@ -82,6 +90,14 @@ export default function MultiStepForm({
 
   const handleMint = async () => {
     const data = watch();
+    toast({
+      title: "Please wait",
+      description: "This might take several minutes",
+      status: "info",
+      duration: 10000,
+      isClosable: true,
+    });
+
     if (!contract || !address || !data) {
       console.error("Missing contract, address, or formData");
       return;
@@ -110,24 +126,22 @@ export default function MultiStepForm({
 
       console.log("r:", result);
       toast({
-        title: "Success!",
-        description: "The SBT has been successfully minted.",
+        title: "Success !",
+        description: "Your certificate has been successfully created.",
         status: "success",
         duration: 5000,
         isClosable: true,
-        position: "bottom-right",
       });
       setStep(0);
       reset();
     } catch (err) {
       setIsMinting(false);
       toast({
-        title: "Error!",
-        description: "There was an error while minting the SBT.",
+        title: "Error !",
+        description: "There was an error while creating the certificate.",
         status: "error",
         duration: 5000,
         isClosable: true,
-        position: "bottom-right",
       });
       console.error("e:", err);
     }

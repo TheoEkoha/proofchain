@@ -16,15 +16,19 @@ import { useForm, FormProvider } from "react-hook-form";
 
 const steps: FormStepProps[] = [
   {
-    title: "Fill",
-    subtitle: "Digital certification information",
-    description: "Fill your certification information",
+    title: "Create",
+    subtitle: "Load certificate information",
+    description: "Certificate information",
   },
-  { title: "Upload", subtitle: "File", description: "Upload your file" },
+  {
+    title: "Upload",
+    subtitle: "Browse files",
+    description: "Select your files",
+  },
   {
     title: "Publication",
     subtitle: "Mint your certification",
-    description: "Creation of your digital certification",
+    description: "Congratulations ! 🚀",
   },
 ];
 
@@ -51,7 +55,7 @@ export function CreateDigitalCertification() {
 
             <Box flexShrink="0">
               <StepTitle>{step.title}</StepTitle>
-              <StepDescription>{step.subtitle}</StepDescription>
+              {/* <StepDescription>{step.subtitle}</StepDescription> */}
             </Box>
 
             <StepSeparator />

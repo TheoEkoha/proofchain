@@ -90,7 +90,7 @@ const MenuLinks = ({ isOpen }) => {
           <MenuItem to="/about">About </MenuItem>
           {/* <MenuItem to="/features">Features </MenuItem> */}
         </Stack>
-        <Connect />
+        <Connect label={"Sign in"} />
       </Stack>
     </Box>
   );

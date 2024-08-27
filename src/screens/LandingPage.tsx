@@ -172,6 +172,96 @@ export const LandingPage = () => {
           <Stack className="flex justify-center mb-20">
             <Heading lineHeight="tall">
               <Highlight
+                query="share"
+                styles={{ px: "2", py: "1", rounded: "full", bg: "teal.200" }}
+              >
+                Share with people
+              </Highlight>
+            </Heading>
+            <Text fontSize="xl">
+              Share, publy your certificates on LinkedIn, X, GitHub ...
+            </Text>
+            <SimpleGrid
+              mt={10}
+              minChildWidth="120px"
+              spacing="40px"
+              columns={2}
+            >
+              <Card
+                direction={{ base: "column", sm: "row" }}
+                overflow="hidden"
+                variant="outline"
+              >
+                <Image
+                  objectFit="cover"
+                  maxW={{ base: "100%", sm: "150px" }}
+                  src="https://d1.awsstatic.com/certification/badges/AWS-Certified-Data-Engineer-Associate_badge_300x300.a231ff0ff32a28adf061d3f7fa36564964b4a4b5.png"
+                  alt="AWS Certified Data Engineer"
+                />
+                <Stack>
+                  <CardBody>
+                    <Heading size="md">Public certification</Heading>
+                    <Text fontSize="sm">
+                      Display your skills visible to all
+                    </Text>
+                  </CardBody>
+                  <CardFooter>
+                    <VStack align="start">
+                      <HStack>
+                        <Tag variant={"solid"} bgColor="purple.400">
+                          Data
+                        </Tag>
+                        <Tag variant={"solid"} bgColor="red.500">
+                          DevOps
+                        </Tag>
+                      </HStack>
+                      <HStack>
+                        <Wrap>
+                          <WrapItem>
+                            <Avatar
+                              mr={0.5}
+                              size="xs"
+                              name="John Doe"
+                              src="https://bit.ly/dan-abramov"
+                            />
+                            <Text>John Doe </Text>
+                          </WrapItem>
+                        </Wrap>
+                      </HStack>
+                    </VStack>
+                  </CardFooter>
+                </Stack>
+              </Card>
+              <Card
+                direction={{ base: "column", sm: "row" }}
+                overflow="hidden"
+                variant="outline"
+              >
+                <Image
+                  objectFit="cover"
+                  maxW={{ base: "100%", sm: "150px" }}
+                  src="https://d1.awsstatic.com/certification/badges/AWS-Certified-Data-Engineer-Associate_badge_300x300.a231ff0ff32a28adf061d3f7fa36564964b4a4b5.png"
+                  alt="AWS Certified Data Engineer"
+                />
+                <Stack>
+                  <CardBody>
+                    <Heading size="md">Private certification</Heading>
+                    <Text fontSize="sm">
+                      Keep some certifications confidential
+                    </Text>
+                  </CardBody>
+                  <CardFooter>
+                    <VStack align="start">
+                      <Tag>Private</Tag>
+                    </VStack>
+                  </CardFooter>
+                </Stack>
+              </Card>
+            </SimpleGrid>
+          </Stack>
+          <Stack className="flex justify-center mb-20">
+            <Heading lineHeight="tall">
+              <Highlight
                 query="certification"
                 styles={{ px: "2", py: "1", rounded: "full", bg: "blue.200" }}
               >
@@ -199,7 +289,7 @@ export const LandingPage = () => {
                     {/*<FormHelperText>We'll never share your email.</FormHelperText>*/}
                   </GridItem>
                   <GridItem colStart={4} colEnd={6}>
-                    <FormLabel>Emitor</FormLabel>
+                    <FormLabel>Issued by</FormLabel>
                     <Input placeholder="Linux foundation" type="text" />
                   </GridItem>
                   <GridItem colSpan={3} maxWidth="100%">
@@ -240,7 +330,7 @@ export const LandingPage = () => {
                     />
                   </GridItem>
                   <GridItem colStart={4} colEnd={6}>
-                    <FormLabel>Date of obtention</FormLabel>
+                    <FormLabel>Issued on</FormLabel>
                     <Input
                       placeholder="Date of obtention"
                       size="md"
@@ -254,6 +344,7 @@ export const LandingPage = () => {
               <Text fontSize="sm">and more...</Text>
               <Box mt={5} alignContent={"center"} maxWidth={"100%"}>
                 <Connect label={"Get started now !"} />
+                {/* rediriger sur le dashboard ou remonter en haut de la page */}
               </Box>
             </Stack>
             <Box></Box>

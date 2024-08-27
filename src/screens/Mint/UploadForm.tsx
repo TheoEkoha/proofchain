@@ -7,6 +7,9 @@ import {
   GridItem,
   FormErrorMessage,
   Highlight,
+  Text,
+  HStack,
+  VStack,
 } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 import { FormStepProps } from "./MultiStepForm";
@@ -28,16 +31,22 @@ export const UploadForm = (props: FormStepProps) => {
         lineHeight="tall"
       >
         <Highlight
-          query="upload"
+          query="select"
           styles={{ px: "2", py: "1", rounded: "full", bg: "teal.100" }}
         >
           {description}
         </Highlight>
       </Heading>
       <FormControl as={GridItem} colSpan={[6, 3]} isInvalid={!!errors.image}>
-        <FormLabel htmlFor="image" fontSize="sm" fontWeight="md">
-          Image
-        </FormLabel>
+        <VStack alignItems="start">
+          <FormLabel htmlFor="image" fontSize="sm" fontWeight="md">
+            Proof of certificate completion
+          </FormLabel>
+          <Text color="grey" fontSize="xs">
+            Please provide an image
+          </Text>
+        </VStack>
+
         <Input
           type="file"
           id="image"
@@ -57,9 +66,9 @@ export const UploadForm = (props: FormStepProps) => {
         isInvalid={!!errors.file}
         mt={"2%"}
       >
-        <FormLabel htmlFor="file" fontSize="sm" fontWeight="md">
-          File
-        </FormLabel>
+        <Text color="grey" fontSize="xs">
+          Please provide a PDF format
+        </Text>
         <Input
           type="file"
           id="file"

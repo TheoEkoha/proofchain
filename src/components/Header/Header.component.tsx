@@ -31,7 +31,7 @@ const Header = () => {
                 bg: "blue.200",
               }}
             >
-              Discover the future of certification, diplomas
+              Discover the future of certification,
             </Highlight>
           </Heading>
           <Heading as={"h2"} lineHeight="md" color={"white"}>

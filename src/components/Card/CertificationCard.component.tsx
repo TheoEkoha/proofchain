@@ -22,6 +22,7 @@ import { LuBadgeCheck } from "react-icons/lu";
 import { capitalize } from "lodash";
 import { skillTags } from "../../utils/skills";
 import { Address } from "../Address/Address.component";
+import { useNavigate } from "@tanstack/react-router";
 
 export const CertificationStatus = {
   CERTIFIED: "CERTIFIED",
@@ -71,6 +72,29 @@ const CertificationCard = (props: CertificationCardProps) => {
     isLoading,
   } = props;
 
+  const navigate = useNavigate();
+  const handlePreview = (certificateData: CertificationCardProps) => {
+    // const url = "https://www.linkedin.com/sharing/share-offsite/";
+    // const params = new URLSearchParams({
+    //   url: "https://google.fr",
+    //   title: certificateData.title,
+    //   description: certificateData.description,
+    //   image: certificateData.image,
+    // });
+    const url = "https://www.linkedin.com/shareArticle";
+    const params = new URLSearchParams({
+      title: certificateData.title,
+      description: certificateData.description,
+      image: certificateData.image,
+      url: "https://google.fr",
+    });
+    console.log(")--> ", `${url}?${params.toString()}`);
+
+    return `${url}?${params.toString()}`;
+
+    return navigate({ to: `${url}?${params.toString()}` });
+  };
+
   const displayedTags = tags || tagsValue?.map(getTagDetails);
 
   return (
@@ -96,7 +120,7 @@ const CertificationCard = (props: CertificationCardProps) => {
           </Skeleton>
           <Skeleton isLoaded={!isLoading}>
             <Text fontSize="sm" as="i">
-              Emitor: {emitor}
+              Issued by: {emitor}
             </Text>
           </Skeleton>
           <Skeleton isLoaded={!isLoading}>
@@ -159,7 +183,13 @@ const CertificationCard = (props: CertificationCardProps) => {
                   {displayStatus(status)}
                 </Skeleton>
                 <Skeleton isLoaded={!isLoading}>
-                  <Button variant="ghost" colorScheme="blue">
+                  <Button
+                    variant="ghost"
+                    colorScheme="blue"
+                    onClick={() =>
+                      handlePreview({ ...props } as CertificationCardProps)
+                    }
+                  >
                     Preview
                   </Button>
                 </Skeleton>

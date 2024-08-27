@@ -62,11 +62,11 @@ interface SidebarProps extends BoxProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", to: "/dashboard", icon: FiHome },
   {
-    name: "Create certification",
+    name: "Create my certificate",
     to: "/create-digital-certification",
     icon: FiEdit,
   },
-  { name: "My certifications", to: "/my-certifications", icon: FiBook },
+  { name: "My profile", to: "/my-certifications", icon: FiBook },
 ];
 
 export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
@@ -171,12 +171,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        <IconButton
+        {/* <IconButton
           size="lg"
           variant="ghost"
           aria-label="open menu"
           icon={<FiBell />}
-        />
+        /> */}
         <Flex alignItems={"center"}>
           <HStack>
             <Connect />

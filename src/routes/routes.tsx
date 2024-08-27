@@ -19,6 +19,7 @@ import { MyCertifications } from "../screens/MyCertifications";
 function ProtectedRoute({ children }) {
   const address = getUserConnected();
 
+  console.log("add -> ", address);
   if (!address) {
     return <Navigate to="/" />;
   }

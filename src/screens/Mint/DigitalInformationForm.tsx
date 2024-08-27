@@ -39,7 +39,7 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
         lineHeight="tall"
       >
         <Highlight
-          query="certification"
+          query="informations"
           styles={{ px: "2", py: "1", rounded: "full", bg: "teal.100" }}
         >
           {description}
@@ -74,7 +74,7 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
 
       <FormControl isInvalid={!!errors.title} mb="4">
         <FormLabel htmlFor="certification-title" fontWeight={"normal"}>
-          Title of certification
+          Title of the certification
         </FormLabel>
         <InputGroup size="md">
           <Input
@@ -88,7 +88,7 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
 
       <FormControl isInvalid={!!errors.description} mb="4">
         <FormLabel htmlFor="certification-description" fontWeight={"normal"}>
-          Description of certification
+          Description of the certification
         </FormLabel>
         <InputGroup size="md">
           <Textarea
@@ -104,7 +104,7 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
 
       <FormControl isInvalid={!!errors.identifiant} mb="4">
         <FormLabel htmlFor="identifiant" fontWeight={"normal"}>
-          Identifiant
+          Certificate ID
         </FormLabel>
         <InputGroup size="md">
           <Input
@@ -177,24 +177,26 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
       <Flex mt="2%">
         <FormControl isInvalid={!!errors.emitor} mr="5%">
           <FormLabel htmlFor="emitor" fontWeight={"normal"}>
-            Emitor
+            Issued by
           </FormLabel>
           <Input
             id="emitor"
             placeholder="Company name."
-            {...register("emitor", { required: "Emitor is required" })}
+            {...register("emitor", { required: "Issuer is required" })}
           />
           <FormErrorMessage>{errors.emitor?.message}</FormErrorMessage>
         </FormControl>
 
         <FormControl isInvalid={!!errors.dateOfObtention}>
-          <FormLabel htmlFor="date-obtention">Date of obtention</FormLabel>
+          <FormLabel htmlFor="date-obtention">Issued on</FormLabel>
           <Input
             id="date-obtention"
             placeholder="Date of obtention"
             size="md"
             type="date"
-            {...register("dateOfObtention", { required: "Date is required" })}
+            {...register("dateOfObtention", {
+              required: "Please select the date",
+            })}
           />
           <FormErrorMessage>{errors.dateOfObtention?.message}</FormErrorMessage>
         </FormControl>

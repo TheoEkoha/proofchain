@@ -54,7 +54,7 @@ export const MintForm = (props: FormStepProps) => {
         </Highlight>
       </Heading>
       <Box display={"flex"} justifyContent={"center"} mt={"2%"}>
-        <Text>Your digital certification will look like</Text>
+        <Text>Your digital certification is ready to be created</Text>
       </Box>
       <Box display={"flex"} justifyContent={"center"} mt={"2%"}>
         <CertificationCard
