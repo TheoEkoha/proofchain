@@ -13,10 +13,13 @@ import {
   Avatar,
   Highlight,
   Divider,
+  Stack,
 } from "@chakra-ui/react";
 import NavBar from "../components/Navbar/Navbar.component";
 import { TeamMember } from "../components/TeamMember/TeamMember.component";
 import to from "../assets/images/to.webp";
+import { FaLinkedin } from "react-icons/fa";
+import { SocialButton } from "../components/SocialButton/SocialButton.component";
 
 export const About = () => {
   return (
@@ -128,11 +131,19 @@ export const About = () => {
               our platform to meet user needs, while exploring new ways to apply
               decentralization to skill development.
             </Text>
-            <TeamMember
-              name="Olivieri Théo"
-              role="Founder / Web3 Developer"
-              image={to}
-            />
+            <VStack spacing={2}>
+              <TeamMember
+                name="Théo Olivieri"
+                role="Founder / Web3 Developer"
+                image={to}
+              />
+              <SocialButton
+                label={"LinkedIn"}
+                href={"https://www.linkedin.com/in/theo-olivieri/"}
+              >
+                <FaLinkedin />
+              </SocialButton>
+            </VStack>
           </Box>
           <Divider />
           {/* Join Us Section */}
@@ -153,7 +164,7 @@ export const About = () => {
               Web3 together.
             </Text>
             <HStack justifyContent="center" spacing={4} mt={5}>
-              <Link href="mailto:your-email@proofchain.com">
+              <Link href="mailto:olivieri.theo@gmail.com">
                 <Button colorScheme="blue" size="lg">
                   Contact Us
                 </Button>

@@ -14,6 +14,7 @@ import {
 } from "../screens/CreateDigitalCertification";
 import { Home } from "../screens/Home";
 import { MyCertifications } from "../screens/MyCertifications";
+import Footer from "../layouts/Footer";
 
 // Composant de route protégée
 function ProtectedRoute({ children }) {
@@ -31,7 +32,10 @@ function ProtectedRoute({ children }) {
 const rootRoute = createRootRoute({
   component: () => (
     <div>
-      <Outlet />
+      <>
+        <Outlet />
+        <Footer></Footer>
+      </>
     </div>
   ),
 });

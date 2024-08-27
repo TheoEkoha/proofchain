@@ -113,6 +113,7 @@ export const Home = () => {
                   emitor={token.metadata.emitor}
                   tagsValue={token.metadata.tags}
                   description={token.metadata.description}
+                  displayDivider
                 />
               </GridItem>
             ))}
