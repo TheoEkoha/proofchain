@@ -6,7 +6,7 @@ import CertificationCard, {
   CertificationStatus,
 } from "../components/Card/CertificationCard.component";
 import CertificationCardSkeleton from "../components/Card/CertificationCardSkeleton.component";
-import { Grid, GridItem, Heading, Highlight } from "@chakra-ui/react";
+import { Grid, GridItem, Heading, Highlight, Text } from "@chakra-ui/react";
 
 const smartContractAddressSepolia = import.meta.env
   .VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
@@ -30,7 +30,7 @@ export interface TokenMetadata {
   identifiant: string;
 }
 
-export const Home = () => {
+export const MyCertifications = () => {
   const { contract } = useContract(smartContractAddressSepolia);
   const address = useAddress();
 
@@ -41,7 +41,7 @@ export const Home = () => {
       await contract.call("getCurrentTokenId");
     const currentTokenId = currentTokenIdBigNumber.toNumber();
 
-    const allTokensData: Token[] = [];
+    const userTokensData: Token[] = [];
 
     for (let tokenId = 0; tokenId < currentTokenId; tokenId++) {
       try {
@@ -52,26 +52,28 @@ export const Home = () => {
 
         if (currentTokenState[0]) {
           const owner = await contract.call("ownerOf", [tokenId]);
-          const metadata = await contract.call("getTokenMetadata", [tokenId]);
 
-          const tokenData: Token = {
-            tokenId: tokenId.toString(),
-            owner,
-            metadata: JSON.parse(metadata) as TokenMetadata,
-          };
+          if (owner === address) {
+            const metadata = await contract.call("getTokenMetadata", [tokenId]);
 
-          allTokensData.push(tokenData);
+            const tokenData: Token = {
+              tokenId: tokenId.toString(),
+              owner,
+              metadata: JSON.parse(metadata) as TokenMetadata,
+            };
+            userTokensData.push(tokenData);
+          }
         }
       } catch (error) {
         console.error(`Failed to fetch token ${tokenId}:`, error);
       }
     }
 
-    return allTokensData;
+    return userTokensData;
   };
 
   const {
-    data: allTokens = [],
+    data: userTokensData = [],
     isLoading,
     error,
     refetch,
@@ -88,14 +90,20 @@ export const Home = () => {
 
   return (
     <div>
+      {" "}
       <Heading lineHeight="tall" pb={"2%"}>
         <Highlight
-          query="minted"
+          query="certifications"
           styles={{ px: "2", py: "1", rounded: "full", bg: "blue.100" }}
         >
-          All minted certifications
+          My certifications
         </Highlight>
       </Heading>
+      {!isLoading && userTokensData.length === 0 ? (
+        <Text>Sorry, you have no certification yet</Text>
+      ) : (
+        ""
+      )}
       <Grid templateColumns="repeat(4, 1fr)" gap={6}>
         {isLoading
           ? Array.from({ length: 4 }).map((_, index) => (
@@ -103,10 +111,9 @@ export const Home = () => {
                 <CertificationCardSkeleton />
               </GridItem>
             ))
-          : allTokens.map((token) => (
+          : userTokensData.map((token) => (
               <GridItem key={token.tokenId} w="100%">
                 <CertificationCard
-                  owner={token.owner}
                   title={token.metadata.title}
                   image={token.metadata.image}
                   status={CertificationStatus.CERTIFIED}

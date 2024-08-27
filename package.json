@@ -12,6 +12,7 @@
     "ethers": "^5.7.2"
   },
   "dependencies": {
+    "@ant-design/web3": "^1.16.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",

@@ -28,7 +28,6 @@ export const CertificationCardSkeleton = () => {
         <Wrap spacing={4}>
           {Array.from({ length: 3 }).map((_, index) => (
             <WrapItem key={index}>
-              {/* <SkeletonCircle size="8" /> */}
               <Skeleton height="25px" width="70px" borderRadius={0.5} />
             </WrapItem>
           ))}

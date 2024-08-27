@@ -8,7 +8,7 @@ import {
   Stack,
   useToast,
 } from "@chakra-ui/react";
-import { ConnectButton } from "thirdweb/react";
+import { ConnectButton, useActiveAccount } from "thirdweb/react";
 import { createWallet, inAppWallet, walletConnect } from "thirdweb/wallets";
 import { chain, wallets } from "../../utils/wallet";
 import { client } from "../../client";
@@ -69,6 +69,7 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
 
 const MenuLinks = ({ isOpen }) => {
   const toast = useToast();
+  const account = useActiveAccount();
 
   return (
     <Box
@@ -85,16 +86,9 @@ const MenuLinks = ({ isOpen }) => {
       >
         <Stack direction={["column", "row"]} spacing={8} align="center">
           <MenuItem to="/">Home</MenuItem>
-          <MenuItem
-            // onOpen={() => {
-            //   console.log("je m'ouvre");
-            // }}
-            to="/dashboard"
-          >
-            Dashboard{" "}
-          </MenuItem>
+          {account && <MenuItem to="/dashboard">Dashboard </MenuItem>}
           <MenuItem to="/about">About </MenuItem>
-          <MenuItem to="/features">Features </MenuItem>
+          {/* <MenuItem to="/features">Features </MenuItem> */}
         </Stack>
         <Connect />
       </Stack>

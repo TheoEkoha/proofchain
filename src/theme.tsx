@@ -14,8 +14,8 @@ const theme = extendTheme({
     }),
   },
   fonts: {
-    heading: "Outfit, sans-serif",
-    body: "Outfit, sans-serif",
+    heading: "Stem, sans-serif",
+    body: "Stem, sans-serif",
   },
 });
 

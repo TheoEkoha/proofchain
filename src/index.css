@@ -30,3 +30,13 @@
     @apply bg-zinc-950 text-neutral-200;
   }
 }
+
+@font-face{
+  font-family: "Stem";
+  src:local("Stem-Regular"),
+  url('./assets/fonts/Stem-Bold/Stem-Regular.ttf') 
+}
+
+body {
+  font-family: 'Stem', sans-serif;
+}

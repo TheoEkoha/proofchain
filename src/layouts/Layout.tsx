@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import {
   FiHome,
-  FiBookOpen,
+  FiBook,
   FiCompass,
   FiEdit,
   FiStar,
@@ -35,8 +35,9 @@ import {
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { Connect } from "../components/Connect/ConnectButton.component";
-import { Outlet } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useAddress } from "@thirdweb-dev/react";
+import logo from "../assets/images/logo.webp";
 
 interface LinkItemProps {
   name: string;
@@ -65,10 +66,12 @@ const LinkItems: Array<LinkItemProps> = [
     to: "/create-digital-certification",
     icon: FiEdit,
   },
-  { name: "My certifications", to: "/explore", icon: FiBookOpen },
+  { name: "My certifications", to: "/my-certifications", icon: FiBook },
 ];
 
 export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const navigate = useNavigate();
+
   return (
     <Box
       transition="3s ease"
@@ -80,10 +83,15 @@ export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       h="full"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
-        </Text>
+      <Flex
+        h="20"
+        alignItems="center"
+        mx="8"
+        style={{ cursor: "pointer" }}
+        onClick={() => navigate({ to: "/" })}
+      >
+        <img src={logo} alt="" className="size-[50px] md:size-[50px]" />
+        <Text fontSize="xl">ProofChain</Text>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (

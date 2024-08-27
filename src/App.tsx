@@ -1,6 +1,7 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routes/routes";
 import { useWalletInfo } from "thirdweb/react";
+import "./assets/fonts/Stem-Bold/Stem-Regular.ttf";
 
 const router = createRouter({ routeTree });
 

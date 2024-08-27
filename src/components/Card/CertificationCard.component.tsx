@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -17,10 +16,12 @@ import {
   TagLabel,
   TagRightIcon,
   Skeleton,
+  HStack,
 } from "@chakra-ui/react";
 import { LuBadgeCheck } from "react-icons/lu";
 import { capitalize } from "lodash";
 import { skillTags } from "../../utils/skills";
+import { Address } from "../Address/Address.component";
 
 export const CertificationStatus = {
   CERTIFIED: "CERTIFIED",
@@ -40,7 +41,7 @@ const displayStatus = (status: string) => {
 
 const getTagDetails = (tagValue: string) => {
   const tag = skillTags.find((t) => t.value === tagValue);
-  return tag || { value: tagValue, label: tagValue, color: "gray.500" }; // Valeur par défaut si non trouvé
+  return tag || { value: tagValue, label: tagValue, color: "gray.500" };
 };
 
 interface CertificationCardProps {
@@ -49,6 +50,7 @@ interface CertificationCardProps {
   description: string;
   status: string;
   emitor: string;
+  owner?: string;
   tags?: { value: string; label: string; color: string }[];
   tagsValue?: string[];
   displayDivider?: boolean;
@@ -62,6 +64,7 @@ const CertificationCard = (props: CertificationCardProps) => {
     description,
     status,
     emitor,
+    owner,
     tags,
     tagsValue,
     displayDivider,
@@ -104,7 +107,7 @@ const CertificationCard = (props: CertificationCardProps) => {
               maxHeight="5.5rem"
               lineHeight="1.5rem"
             >
-              <Wrap spacing={4} shouldWrapChildren>
+              <Wrap spacing="8px">
                 {displayedTags?.map((tag) => {
                   if (!(typeof tag.value === "object") && tag.value !== null)
                     return (
@@ -120,6 +123,32 @@ const CertificationCard = (props: CertificationCardProps) => {
           </Skeleton>
         </Stack>
       </CardBody>
+      {owner && (
+        <>
+          <Divider />
+          <CardFooter>
+            <Stack mb={"2%"} direction={"row"} spacing={4} align={"center"}>
+              <HStack
+                justifyContent="space-between"
+                direction="column"
+                spacing={2}
+                fontSize="sm"
+                width="100%"
+              >
+                <Text color={"gray.500"}>Owner:</Text>
+                <Address
+                  ellipsis={{
+                    headClip: 8,
+                    tailClip: 6,
+                  }}
+                  copyable
+                  address={owner}
+                />
+              </HStack>
+            </Stack>
+          </CardFooter>
+        </>
+      )}
       {displayDivider && (
         <>
           <Divider />

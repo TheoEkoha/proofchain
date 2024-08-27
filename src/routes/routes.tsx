@@ -13,6 +13,7 @@ import {
   Trending,
 } from "../screens/CreateDigitalCertification";
 import { Home } from "../screens/Home";
+import { MyCertifications } from "../screens/MyCertifications";
 
 // Composant de route protégée
 function ProtectedRoute({ children }) {
@@ -35,7 +36,7 @@ const rootRoute = createRootRoute({
 });
 
 // Route pour la page d'accueil
-const indexRoute = createRoute({
+export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: LandingPage,
@@ -56,7 +57,7 @@ const dashboardRoute = createRoute({
 });
 
 // Route pour Dashboard
-const trendingRoute = createRoute({
+const createDigitalCertificationRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/create-digital-certification",
   component: () => {
@@ -66,6 +67,20 @@ const trendingRoute = createRoute({
     return (
       <ProtectedRoute>
         <CreateDigitalCertificationComponent />
+      </ProtectedRoute>
+    );
+  },
+});
+
+// Route pour MyCertifications
+const myCertificationsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/my-certifications",
+  component: () => {
+    const MyCertificationsComponent = Layout(MyCertifications);
+    return (
+      <ProtectedRoute>
+        <MyCertificationsComponent />
       </ProtectedRoute>
     );
   },
@@ -82,5 +97,6 @@ export const routeTree = rootRoute.addChildren([
   indexRoute,
   aboutRoute,
   dashboardRoute,
-  trendingRoute,
+  createDigitalCertificationRoute,
+  myCertificationsRoute,
 ]);

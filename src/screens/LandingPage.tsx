@@ -83,7 +83,7 @@ export const LandingPage = () => {
             <Heading lineHeight="tall">
               <Highlight
                 query="skills"
-                styles={{ px: "2", py: "1", rounded: "full", bg: "red.100" }}
+                styles={{ px: "2", py: "1", rounded: "full", bg: "teal.200" }}
               >
                 Skills Management
               </Highlight>
@@ -173,7 +173,7 @@ export const LandingPage = () => {
             <Heading lineHeight="tall">
               <Highlight
                 query="certification"
-                styles={{ px: "2", py: "1", rounded: "full", bg: "yellow.100" }}
+                styles={{ px: "2", py: "1", rounded: "full", bg: "blue.200" }}
               >
                 Create a new certification
               </Highlight>
