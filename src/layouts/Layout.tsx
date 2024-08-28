@@ -33,6 +33,7 @@ import {
   FiBell,
   FiChevronDown,
 } from "react-icons/fi";
+import { FaEthereum } from "react-icons/fa";
 import { IconType } from "react-icons";
 import { Connect } from "../components/Connect/ConnectButton.component";
 import { useNavigate } from "@tanstack/react-router";
@@ -67,6 +68,11 @@ const LinkItems: Array<LinkItemProps> = [
     icon: FiEdit,
   },
   { name: "My profile", to: "/my-certifications", icon: FiBook },
+  {
+    name: "Claim free ETH (Testnet)",
+    to: "/claim-faucet",
+    icon: FaEthereum,
+  },
 ];
 
 export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {

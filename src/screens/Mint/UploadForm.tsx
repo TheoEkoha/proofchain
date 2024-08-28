@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Heading,
   FormControl,
@@ -6,15 +5,13 @@ import {
   Input,
   GridItem,
   FormErrorMessage,
-  Highlight,
   Text,
-  HStack,
   VStack,
 } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
-import { FormStepProps } from "./MultiStepForm";
+import { MultiStepFormData } from "./MultiStepForm";
 
-export const UploadForm = (props: FormStepProps) => {
+export const UploadForm = (props: MultiStepFormData) => {
   const { description } = props;
   const {
     register,
@@ -30,12 +27,7 @@ export const UploadForm = (props: FormStepProps) => {
         mb="2%"
         lineHeight="tall"
       >
-        <Highlight
-          query="select"
-          styles={{ px: "2", py: "1", rounded: "full", bg: "teal.100" }}
-        >
-          {description}
-        </Highlight>
+        {description}
       </Heading>
       <FormControl as={GridItem} colSpan={[6, 3]} isInvalid={!!errors.image}>
         <VStack alignItems="start">
@@ -73,7 +65,14 @@ export const UploadForm = (props: FormStepProps) => {
           type="file"
           id="file"
           accept=".pdf"
-          {...register("file", { required: "File (.pdf) is required" })}
+          {...register("file", {
+            required: "File (.pdf) is required",
+            validate: {
+              lessThan3MB: (files) =>
+                files[0]?.size < 3 * 1024 * 1024 ||
+                "File size must be less than 3MB",
+            },
+          })}
           focusBorderColor="brand.400"
           shadow="sm"
           size="sm"

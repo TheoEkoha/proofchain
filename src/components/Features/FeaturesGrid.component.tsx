@@ -9,17 +9,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import {
-  FcAbout,
-  FcAssistant,
-  FcDiploma1,
-  FcInspection,
-  FcCollaboration,
-  FcDonate,
-  FcManager,
-  FcUpload,
-  FcShare,
-} from "react-icons/fc";
+import { FcDiploma1, FcInspection, FcUpload } from "react-icons/fc";
 import { LinkedinIcon, XIcon } from "react-share";
 
 interface CardFeatureProps {

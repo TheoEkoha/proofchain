@@ -38,12 +38,7 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
         mb="2%"
         lineHeight="tall"
       >
-        <Highlight
-          query="informations"
-          styles={{ px: "2", py: "1", rounded: "full", bg: "teal.100" }}
-        >
-          {description}
-        </Highlight>
+        {description}
       </Heading>
 
       <Flex>

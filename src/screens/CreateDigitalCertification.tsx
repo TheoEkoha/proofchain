@@ -42,7 +42,7 @@ export function CreateDigitalCertification() {
 
   return (
     <div className="p-2">
-      <Stepper size="lg" index={activeStep} colorScheme="teal">
+      <Stepper size="lg" index={activeStep}>
         {steps.map((step, index) => (
           <Step key={index}>
             <StepIndicator>

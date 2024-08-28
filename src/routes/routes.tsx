@@ -5,15 +5,13 @@ import {
   Outlet,
 } from "@tanstack/react-router";
 import { LandingPage } from "../screens/LandingPage";
-import { Dashboard, Layout } from "../layouts/Layout";
+import { Layout } from "../layouts/Layout";
 import { About } from "../screens/About";
 import { getUserConnected } from "../services/wallet.query";
-import {
-  CreateDigitalCertification,
-  Trending,
-} from "../screens/CreateDigitalCertification";
+import { CreateDigitalCertification } from "../screens/CreateDigitalCertification";
 import { Home } from "../screens/Home";
 import { MyCertifications } from "../screens/MyCertifications";
+import { ClaimFaucet } from "../screens/ClaimFaucet";
 import Footer from "../layouts/Footer";
 import TestnetFooter from "../layouts/TestnetFooter";
 
@@ -21,7 +19,6 @@ import TestnetFooter from "../layouts/TestnetFooter";
 function ProtectedRoute({ children }) {
   const address = getUserConnected();
 
-  console.log("add -> ", address);
   if (!address) {
     return <Navigate to="/" />;
   }
@@ -93,6 +90,20 @@ const myCertificationsRoute = createRoute({
   },
 });
 
+// Route pour ClaimFaucet
+const claimFaucetRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/claim-faucet",
+  component: () => {
+    const ClaimFaucetComponent = Layout(ClaimFaucet);
+    return (
+      <ProtectedRoute>
+        <ClaimFaucetComponent />
+      </ProtectedRoute>
+    );
+  },
+});
+
 // Route pour About
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -106,4 +117,5 @@ export const routeTree = rootRoute.addChildren([
   dashboardRoute,
   createDigitalCertificationRoute,
   myCertificationsRoute,
+  claimFaucetRoute,
 ]);
