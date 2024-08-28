@@ -54,7 +54,6 @@ export const Home = () => {
           const owner = await contract.call("ownerOf", [tokenId]);
           const metadata = await contract.call("getTokenMetadata", [tokenId]);
 
-          console.log(metadata);
           const tokenData: Token = {
             tokenId: tokenId.toString(),
             owner,

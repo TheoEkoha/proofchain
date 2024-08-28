@@ -47,7 +47,7 @@ export default function MultiStepForm({
   setStep,
 }: MultiStepFormProps) {
   const methods = useFormContext<MultiStepFormData>();
-  const { trigger, watch, reset } = methods; // Ajout de `reset`
+  const { trigger, watch, reset } = methods;
   const address = useAddress();
   const [isMinting, setIsMinting] = useState(false);
   const toast = useToast();
@@ -149,13 +149,12 @@ export default function MultiStepForm({
 
   const handleNext = async () => {
     const allField = await watch();
-    console.log(allField);
-    const isValid = await trigger(); // Valider le formulaire actuel
+    const isValid = await trigger();
     if (isValid) {
       if (step === 2) {
-        await handleMint(); // Appeler handleMint uniquement à la dernière étape
+        await handleMint();
       } else {
-        setStep(step + 1); // Passer à l'étape suivante
+        setStep(step + 1);
       }
     }
   };
