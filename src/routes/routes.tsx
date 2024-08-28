@@ -7,7 +7,7 @@ import {
 import { LandingPage } from "../screens/LandingPage";
 import { Layout } from "../layouts/Layout";
 import { About } from "../screens/About";
-import { getUserConnected } from "../services/wallet.query";
+import { getUserConnected, isUserConnected } from "../services/wallet.query";
 import { CreateDigitalCertification } from "../screens/CreateDigitalCertification";
 import { Home } from "../screens/Home";
 import { MyCertifications } from "../screens/MyCertifications";
@@ -17,7 +17,7 @@ import TestnetFooter from "../layouts/TestnetFooter";
 import React from "react";
 
 function ProtectedRoute({ children }: { children: React.ReactElement }) {
-  const address = getUserConnected();
+  const address = isUserConnected();
 
   if (!address) {
     return <Navigate to="/" />;

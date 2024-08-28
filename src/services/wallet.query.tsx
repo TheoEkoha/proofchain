@@ -5,6 +5,10 @@ import { redirect } from "@tanstack/react-router";
 
 const LOCAL_STORAGE_KEY_ADDRESS = "thirdweb:active-address";
 
+export function isUserConnected() {
+  return localStorage.getItem("thirdweb:active-wallet-id");
+}
+
 export function getUserConnected() {
   if (localStorage.getItem("thirdweb:active-wallet-id")) {
     return localStorage.getItem(LOCAL_STORAGE_KEY_ADDRESS);
@@ -64,6 +68,7 @@ export function useWalletInfo() {
       queryClient.setQueryData(["wallet", "address"], initialAddress);
       setIsWalletConnected(!!initialAddress);
     } else {
+      console.log("okk");
       clearLocalStorage();
       queryClient.setQueryData(["wallet", "address"], null);
       setIsWalletConnected(false);

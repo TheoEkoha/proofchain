@@ -12,6 +12,6 @@ declare module "@tanstack/react-router" {
 }
 
 export function App() {
-  useWalletInfo();
+  // useWalletInfo();
   return <RouterProvider router={router} />;
 }
