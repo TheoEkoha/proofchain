@@ -1,13 +1,9 @@
-"use client";
-
 import {
   IconButton,
-  Avatar,
   Box,
   CloseButton,
   Flex,
   HStack,
-  VStack,
   Icon,
   useColorModeValue,
   Text,
@@ -16,29 +12,15 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
 } from "@chakra-ui/react";
-import {
-  FiHome,
-  FiBook,
-  FiCompass,
-  FiEdit,
-  FiStar,
-  FiSettings,
-  FiMenu,
-  FiBell,
-  FiChevronDown,
-} from "react-icons/fi";
+import { FiHome, FiBook, FiEdit, FiMenu } from "react-icons/fi";
 import { FaEthereum } from "react-icons/fa";
 import { IconType } from "react-icons";
 import { Connect } from "../components/Connect/ConnectButton.component";
 import { useNavigate } from "@tanstack/react-router";
 import { useAddress } from "@thirdweb-dev/react";
 import logo from "../assets/images/logo.webp";
+import { JSXElementConstructor, ReactElement } from "react";
 
 interface LinkItemProps {
   name: string;
@@ -194,7 +176,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 };
 
 export const Layout =
-  (Component) =>
+  (Component: React.FC) =>
   ({ ...props }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 

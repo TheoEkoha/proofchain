@@ -14,15 +14,17 @@ import { chain, wallets } from "../../utils/wallet";
 import { client } from "../../client";
 import { Connect } from "../Connect/ConnectButton.component";
 
-const NavBar = (props) => {
+const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <NavBarContainer {...props}>
-      <MenuToggle toggle={toggle} isOpen={isOpen} />
-      <MenuLinks isOpen={isOpen} />
+    <NavBarContainer>
+      <>
+        <MenuToggle toggle={toggle} isOpen={isOpen} />
+        <MenuLinks isOpen={isOpen} />
+      </>
     </NavBarContainer>
   );
 };
@@ -49,7 +51,13 @@ const MenuIcon = () => (
   </svg>
 );
 
-const MenuToggle = ({ toggle, isOpen }) => {
+const MenuToggle = ({
+  toggle,
+  isOpen,
+}: {
+  toggle: () => void;
+  isOpen: boolean;
+}) => {
   return (
     <Box display={{ base: "block", md: "none" }} onClick={toggle}>
       {isOpen ? <CloseIcon /> : <MenuIcon />}
@@ -57,7 +65,16 @@ const MenuToggle = ({ toggle, isOpen }) => {
   );
 };
 
-const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
+const MenuItem = ({
+  children,
+  isLast,
+  to = "/",
+  ...rest
+}: {
+  children: React.ReactElement;
+  isLast: boolean;
+  to: string;
+}) => {
   return (
     <Link href={to}>
       <Text display="block" {...rest}>
@@ -67,8 +84,7 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
   );
 };
 
-const MenuLinks = ({ isOpen }) => {
-  const toast = useToast();
+const MenuLinks = ({ isOpen }: { isOpen: boolean }) => {
   const account = useActiveAccount();
 
   return (
@@ -85,11 +101,22 @@ const MenuLinks = ({ isOpen }) => {
         width="100%"
       >
         <Stack direction={["column", "row"]} spacing={8} align="center">
-          <MenuItem to="/">Home</MenuItem>
-          {account && <MenuItem to="/dashboard">Dashboard </MenuItem>}
-          {account && <MenuItem to="/claim-faucet">Claim Faucet</MenuItem>}
-          <MenuItem to="/about">About </MenuItem>
-          {/* <MenuItem to="/features">Features </MenuItem> */}
+          <MenuItem to="/" isLast={!account}>
+            <>Home</>
+          </MenuItem>
+          {account && (
+            <MenuItem to="/dashboard" isLast={false}>
+              <>Dashboard</>
+            </MenuItem>
+          )}
+          {account && (
+            <MenuItem to="/claim-faucet" isLast={false}>
+              <> Claim Faucet</>
+            </MenuItem>
+          )}
+          <MenuItem to="/about" isLast={true}>
+            <>About</>
+          </MenuItem>
         </Stack>
         <Connect label={"Sign in"} />
       </Stack>
@@ -97,7 +124,12 @@ const MenuLinks = ({ isOpen }) => {
   );
 };
 
-const NavBarContainer = ({ children, ...props }) => {
+const NavBarContainer = ({
+  children,
+  ...props
+}: {
+  children: React.ReactElement;
+}) => {
   return (
     <Flex
       as="nav"

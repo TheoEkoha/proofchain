@@ -14,9 +14,9 @@ import { MyCertifications } from "../screens/MyCertifications";
 import { ClaimFaucet } from "../screens/ClaimFaucet";
 import Footer from "../layouts/Footer";
 import TestnetFooter from "../layouts/TestnetFooter";
+import React from "react";
 
-// Composant de route protégée
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ children }: { children: React.ReactElement }) {
   const address = getUserConnected();
 
   if (!address) {
@@ -26,7 +26,6 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-// Route racine
 const rootRoute = createRootRoute({
   component: () => (
     <div>
@@ -39,14 +38,12 @@ const rootRoute = createRootRoute({
   ),
 });
 
-// Route pour la page d'accueil
 export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: LandingPage,
 });
 
-// Route pour Dashboard
 const dashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dashboard",
@@ -60,7 +57,6 @@ const dashboardRoute = createRoute({
   },
 });
 
-// Route pour Dashboard
 const createDigitalCertificationRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/create-digital-certification",
@@ -76,7 +72,6 @@ const createDigitalCertificationRoute = createRoute({
   },
 });
 
-// Route pour MyCertifications
 const myCertificationsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/my-certifications",
@@ -90,7 +85,6 @@ const myCertificationsRoute = createRoute({
   },
 });
 
-// Route pour ClaimFaucet
 const claimFaucetRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/claim-faucet",
@@ -104,7 +98,6 @@ const claimFaucetRoute = createRoute({
   },
 });
 
-// Route pour About
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/about",

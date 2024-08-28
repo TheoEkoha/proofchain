@@ -23,7 +23,6 @@ import { capitalize } from "lodash";
 import { skillTags } from "../../utils/skills";
 import { Address } from "../Address/Address.component";
 import { useNavigate } from "@tanstack/react-router";
-import { Helmet } from "react-helmet";
 import {
   LinkedinIcon,
   LinkedinShareButton,
@@ -97,13 +96,6 @@ const CertificationCard = (props: CertificationCardProps) => {
 
   return (
     <>
-      <Helmet>
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={image} />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:type" content="website" />
-      </Helmet>
       <Card maxW="sm" h={"100%"} overflow="hidden">
         <CardBody>
           <Skeleton isLoaded={!isLoading}>
@@ -117,9 +109,7 @@ const CertificationCard = (props: CertificationCardProps) => {
           </Skeleton>
           <Stack mt="6" spacing="3">
             <Skeleton isLoaded={!isLoading}>
-              <Heading alt="og:title" size="md">
-                {title}
-              </Heading>
+              <Heading size="md">{title}</Heading>
             </Skeleton>
             <Skeleton isLoaded={!isLoading}>
               <Text fontSize="sm" noOfLines={3}>
@@ -219,10 +209,10 @@ const CertificationCard = (props: CertificationCardProps) => {
             <CardFooter justifyContent={"space-between"}>
               <HStack justifyContent={"space-evenly"}>
                 <Skeleton isLoaded={!isLoading}>
-                  <LinkedinShareButton style={{ paddingRight: "16px" }}>
+                  <LinkedinShareButton url="/" style={{ paddingRight: "16px" }}>
                     <LinkedinIcon size={32} round />
                   </LinkedinShareButton>
-                  <TwitterShareButton>
+                  <TwitterShareButton url="/">
                     <XIcon size={32} round />
                   </TwitterShareButton>
                 </Skeleton>

@@ -3,7 +3,13 @@ import React, { isValidElement, useContext, useMemo } from "react";
 import { type Locale } from "@ant-design/web3-common";
 import { ConfigProvider, Space, Typography } from "antd";
 import classNames from "classnames";
-import { IconButton, Text, useClipboard, Tooltip } from "@chakra-ui/react";
+import {
+  IconButton,
+  Text,
+  useClipboard,
+  Tooltip,
+  TooltipProps,
+} from "@chakra-ui/react";
 import { fillWithPrefix, formatAddress } from "../../utils/format";
 import { FiCopy } from "react-icons/fi";
 /**

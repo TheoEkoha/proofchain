@@ -11,8 +11,14 @@ import {
   StepTitle,
   useSteps,
 } from "@chakra-ui/react";
-import MultiStepForm, { FormStepProps } from "./Mint/MultiStepForm";
+import MultiStepForm from "./Mint/MultiStepForm";
 import { useForm, FormProvider } from "react-hook-form";
+
+interface FormStepProps {
+  title: string;
+  subtitle: string;
+  description: string;
+}
 
 const steps: FormStepProps[] = [
   {

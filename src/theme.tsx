@@ -6,7 +6,7 @@ const theme = extendTheme({
     useSystemColorMode: false,
   },
   styles: {
-    global: (props) => ({
+    global: (props: any) => ({
       body: {
         bg: props.colorMode === "dark" ? "gray.800" : "white",
         color: props.colorMode === "dark" ? "white" : "gray.800",

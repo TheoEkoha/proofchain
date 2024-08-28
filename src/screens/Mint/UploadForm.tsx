@@ -9,10 +9,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
-import { MultiStepFormData } from "./MultiStepForm";
 
-export const UploadForm = (props: MultiStepFormData) => {
-  const { description } = props;
+export const UploadForm = ({ description }: { description: string }) => {
   const {
     register,
     formState: { errors },
@@ -50,7 +48,9 @@ export const UploadForm = (props: MultiStepFormData) => {
           w="full"
           rounded="md"
         />
-        <FormErrorMessage>{errors.image?.message}</FormErrorMessage>
+        <FormErrorMessage>
+          <>{errors.image?.message}</>
+        </FormErrorMessage>
       </FormControl>
       <FormControl
         as={GridItem}
@@ -79,7 +79,9 @@ export const UploadForm = (props: MultiStepFormData) => {
           w="full"
           rounded="md"
         />
-        <FormErrorMessage>{errors.file?.message}</FormErrorMessage>
+        <FormErrorMessage>
+          <>{errors.file?.message}</>
+        </FormErrorMessage>
       </FormControl>
     </>
   );

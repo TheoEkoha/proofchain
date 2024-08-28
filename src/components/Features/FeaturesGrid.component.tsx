@@ -59,16 +59,15 @@ const CardFeature = ({
           justify={"center"}
           color={"white"}
           rounded={"full"}
-          position={icon2 ? "absolute" : ""}
           bg={
             icon2
               ? "rgb(0, 119, 181)"
               : useColorModeValue("gray.100", "gray.600")
           }
+          {...(icon2 ? { position: "absolute" } : {})}
         >
           {icon}
         </Flex>
-
         <Box mt={2}>
           <Heading size="md">{heading}</Heading>
           <Text mt={1} fontSize={"sm"}>

@@ -11,11 +11,14 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useFormContext, Controller } from "react-hook-form";
-import { FormStepProps } from "./MultiStepForm";
 import { Select } from "chakra-react-select";
 import { skillTags } from "../../utils/skills";
 
-export const DigitalInformationForm = ({ description }: FormStepProps) => {
+export const DigitalInformationForm = ({
+  description,
+}: {
+  description: string;
+}) => {
   const {
     register,
     control,
@@ -51,7 +54,9 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
             placeholder="First name"
             {...register("firstName", { required: "First name is required" })}
           />
-          <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
+          <FormErrorMessage>
+            <>{errors.firstName?.message}</>
+          </FormErrorMessage>
         </FormControl>
 
         <FormControl isInvalid={!!errors.lastName} mb="4">
@@ -63,7 +68,9 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
             placeholder="Last name"
             {...register("lastName", { required: "Last name is required" })}
           />
-          <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
+          <FormErrorMessage>
+            <>{errors.lastName?.message}</>
+          </FormErrorMessage>
         </FormControl>
       </Flex>
 
@@ -78,7 +85,9 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
             {...register("title", { required: "Title is required" })}
           />
         </InputGroup>
-        <FormErrorMessage>{errors.title?.message}</FormErrorMessage>
+        <FormErrorMessage>
+          <>{errors.title?.message}</>
+        </FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={!!errors.description} mb="4">
@@ -94,7 +103,9 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
             })}
           />
         </InputGroup>
-        <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
+        <FormErrorMessage>
+          <>{errors.description?.message}</>
+        </FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={!!errors.identifiant} mb="4">
@@ -110,7 +121,9 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
             })}
           />
         </InputGroup>
-        <FormErrorMessage>{errors.identifiant?.message}</FormErrorMessage>
+        <FormErrorMessage>
+          <>{errors.identifiant?.message}</>
+        </FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={!!errors.tags} mb="4">
@@ -166,7 +179,9 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
             />
           )}
         />
-        <FormErrorMessage>{errors.tags?.message}</FormErrorMessage>
+        <FormErrorMessage>
+          <>{errors.tags?.message}</>
+        </FormErrorMessage>
       </FormControl>
 
       <Flex mt="2%">
@@ -179,7 +194,9 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
             placeholder="Company name."
             {...register("issuedBy", { required: "Issuer is required" })}
           />
-          <FormErrorMessage>{errors.issuedBy?.message}</FormErrorMessage>
+          <FormErrorMessage>
+            <>{errors.issuedBy?.message}</>
+          </FormErrorMessage>
         </FormControl>
 
         <FormControl isInvalid={!!errors.issuedOn}>
@@ -193,7 +210,9 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
               required: "Please select the date",
             })}
           />
-          <FormErrorMessage>{errors.issuedOn?.message}</FormErrorMessage>
+          <FormErrorMessage>
+            <>{errors.issuedOn?.message}</>
+          </FormErrorMessage>
         </FormControl>
       </Flex>
     </>

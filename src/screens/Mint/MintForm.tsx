@@ -1,12 +1,10 @@
 import { Heading, Highlight, Text, Box } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
-import { MultiStepFormData } from "./MultiStepForm";
 import CertificationCard, {
   CertificationStatus,
 } from "../../components/Card/CertificationCard.component";
 
-export const MintForm = (props: MultiStepFormData) => {
-  const { description } = props;
+export const MintForm = ({ description }: { description: string }) => {
   const {
     watch,
     formState: { errors },
