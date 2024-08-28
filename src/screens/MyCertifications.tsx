@@ -23,8 +23,8 @@ export interface TokenMetadata {
   title: string;
   description: string;
   tags: string[];
-  emitor: string;
-  dateOfObtention: string;
+  issuedBy: string;
+  issuedOn: string;
   file: string;
   image: string;
   identifiant: string;
@@ -94,7 +94,7 @@ export const MyCertifications = () => {
       <Heading lineHeight="tall" pb={"2%"}>
         <Highlight
           query="certifications"
-          styles={{ px: "2", py: "1", rounded: "full", bg: "blue.100" }}
+          styles={{ px: "2", py: "1", rounded: "full", bg: "blue.300" }}
         >
           My certifications
         </Highlight>
@@ -116,10 +116,12 @@ export const MyCertifications = () => {
                 <CertificationCard
                   title={token.metadata.title}
                   image={token.metadata.image}
-                  status={CertificationStatus.CERTIFIED}
-                  emitor={token.metadata.emitor}
+                  issuedBy={token.metadata.issuedBy}
+                  issuedOn={token.metadata.issuedOn}
+                  identifiant={token.metadata.identifiant}
                   tagsValue={token.metadata.tags}
                   description={token.metadata.description}
+                  shareable
                 />
               </GridItem>
             ))}

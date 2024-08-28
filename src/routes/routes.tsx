@@ -15,6 +15,7 @@ import {
 import { Home } from "../screens/Home";
 import { MyCertifications } from "../screens/MyCertifications";
 import Footer from "../layouts/Footer";
+import TestnetFooter from "../layouts/TestnetFooter";
 
 // Composant de route protégée
 function ProtectedRoute({ children }) {
@@ -34,6 +35,7 @@ const rootRoute = createRootRoute({
     <div>
       <>
         <Outlet />
+        <TestnetFooter></TestnetFooter>
         <Footer></Footer>
       </>
     </div>

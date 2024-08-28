@@ -175,30 +175,30 @@ export const DigitalInformationForm = ({ description }: FormStepProps) => {
       </FormControl>
 
       <Flex mt="2%">
-        <FormControl isInvalid={!!errors.emitor} mr="5%">
-          <FormLabel htmlFor="emitor" fontWeight={"normal"}>
+        <FormControl isInvalid={!!errors.issuedBy} mr="5%">
+          <FormLabel htmlFor="issuedBy" fontWeight={"normal"}>
             Issued by
           </FormLabel>
           <Input
-            id="emitor"
+            id="issuedBy"
             placeholder="Company name."
-            {...register("emitor", { required: "Issuer is required" })}
+            {...register("issuedBy", { required: "Issuer is required" })}
           />
-          <FormErrorMessage>{errors.emitor?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.issuedBy?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={!!errors.dateOfObtention}>
+        <FormControl isInvalid={!!errors.issuedOn}>
           <FormLabel htmlFor="date-obtention">Issued on</FormLabel>
           <Input
             id="date-obtention"
             placeholder="Date of obtention"
             size="md"
             type="date"
-            {...register("dateOfObtention", {
+            {...register("issuedOn", {
               required: "Please select the date",
             })}
           />
-          <FormErrorMessage>{errors.dateOfObtention?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.issuedOn?.message}</FormErrorMessage>
         </FormControl>
       </Flex>
     </>

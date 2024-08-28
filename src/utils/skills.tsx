@@ -3,7 +3,7 @@ export const skillTags = [
   { value: "fullstack", label: "Fullstack", color: "green.400" },
   { value: "frontend", label: "Frontend", color: "orange.300" },
   { value: "backend", label: "Backend", color: "red.600" },
-  { value: "solidity", label: "Solidity", color: "gray.700" },
+  { value: "solidity", label: "Solidity", color: "gray.400" },
   { value: "figma", label: "Figma", color: "purple.500" },
   { value: "ui-ux-design", label: "UI/UX Design", color: "pink.400" },
   { value: "data-science", label: "Data Science", color: "indigo.300" },

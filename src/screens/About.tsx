@@ -147,11 +147,11 @@ export const About = () => {
           </Box>
           <Divider />
           {/* Join Us Section */}
-          <Box>
+          <Box mb={"10%"}>
             <Heading as="h2" size="lg" mb={4}>
               <Highlight
                 query="join us"
-                styles={{ px: "2", py: "1", rounded: "full", bg: "teal.200" }}
+                styles={{ px: "2", py: "1", rounded: "full", bg: "teal.300" }}
               >
                 Join Us on this Journey
               </Highlight>

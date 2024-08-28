@@ -34,8 +34,10 @@ export const MintForm = (props: FormStepProps) => {
   const certificationDescription = watch("description");
 
   const tags = watch("tags");
-  //const emitor = "Phantom";
-  const emitor = watch("emitor");
+  //const issuedBy = "Phantom";
+  const issuedBy = watch("issuedBy");
+  const issuedOn = watch("issuedOn");
+  const identifiant = watch("identifiant");
 
   return (
     <>
@@ -61,7 +63,9 @@ export const MintForm = (props: FormStepProps) => {
           title={certificationTitle}
           image={window.URL.createObjectURL(image[0])}
           status={CertificationStatus.CERTIFIED}
-          emitor={emitor}
+          issuedBy={issuedBy}
+          issuedOn={issuedOn}
+          identifiant={identifiant}
           tagsValue={tags}
           description={certificationDescription}
         />

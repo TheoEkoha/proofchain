@@ -35,3 +35,15 @@ export const formatAddress = (address: string = "", groupSize = 4): string => {
 
   return has0x ? `0x ${formattedText}` : formattedText;
 };
+
+export const formatDate = (dateStr: string) => {
+  const dateObj = new Date(dateStr);
+
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Les mois sont indexés à partir de 0
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  const year = dateObj.getFullYear();
+
+  const formattedDate = `${month}/${day}/${year}`;
+
+  return formattedDate;
+};

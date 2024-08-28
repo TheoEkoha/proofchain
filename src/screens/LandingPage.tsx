@@ -24,6 +24,7 @@ import {
   GridItem,
   Grid,
   Icon,
+  Divider,
 } from "@chakra-ui/react";
 
 import { FiTwitter, FiLinkedin } from "react-icons/fi";
@@ -53,6 +54,7 @@ import { chain, wallets } from "../utils/wallet";
 import { Connect } from "../components/Connect/ConnectButton.component";
 import { XIcon } from "react-share";
 import Footer from "../layouts/Footer";
+import FeaturesGrid from "../components/Features/FeaturesGrid.component";
 
 export const LandingPage = () => {
   return (
@@ -68,10 +70,12 @@ export const LandingPage = () => {
                 title="Certified Web 3.0 Professional (CW3P)"
                 image={CW3PImage}
                 status={CertificationStatus.CERTIFIED}
-                emitor="101 Blockchains"
+                issuedBy="101 Blockchains"
+                issuedOn="08-07-2024"
                 description={
                   "The Certified Web 3.0 Professional (CW3P) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3P-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."
                 }
+                identifiant="111578635"
                 displayDivider
                 shareableViewOnly
               />
@@ -79,20 +83,24 @@ export const LandingPage = () => {
                 title="Certified Web3 Blockchain Developer (CW3BD)"
                 image={CW3BDImage}
                 status={CertificationStatus.CERTIFIED}
-                emitor="101 Blockchains"
+                issuedBy="101 Blockchains"
+                issuedOn="08-14-2024"
                 description={
                   "The Certified Web3 Blockchain Developer (CW3BD) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3BD-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."
                 }
+                identifiant="112308052"
                 displayDivider
                 shareableViewOnly
               />
             </SimpleGrid>
           </Stack>
-          <Stack className="flex justify-center mb-20">
+          <Divider mb={10} />
+          <FeaturesGrid></FeaturesGrid>
+          {/* <Stack className="flex justify-center mb-20">
             <Heading lineHeight="tall">
               <Highlight
                 query="skills"
-                styles={{ px: "2", py: "1", rounded: "full", bg: "teal.200" }}
+                styles={{ px: "2", py: "1", rounded: "full", bg: "teal.300" }}
               >
                 Skills Management
               </Highlight>
@@ -182,7 +190,7 @@ export const LandingPage = () => {
             <Heading lineHeight="tall">
               <Highlight
                 query="share"
-                styles={{ px: "2", py: "1", rounded: "full", bg: "teal.200" }}
+                styles={{ px: "2", py: "1", rounded: "full", bg: "teal.300" }}
               >
                 Share with people
               </Highlight>
@@ -199,12 +207,13 @@ export const LandingPage = () => {
               />
               <XIcon size={100} round />
             </HStack>
-          </Stack>
+          </Stack> */}
+          <Divider mt={10} mb={10} />
           <Stack className="flex justify-center mb-20">
             <Heading lineHeight="tall">
               <Highlight
                 query="certification"
-                styles={{ px: "2", py: "1", rounded: "full", bg: "blue.200" }}
+                styles={{ px: "2", py: "1", rounded: "full", bg: "blue.300" }}
               >
                 Create a new certification
               </Highlight>

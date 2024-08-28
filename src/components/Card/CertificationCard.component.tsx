@@ -32,6 +32,7 @@ import {
   XIcon,
 } from "react-share";
 import { LinkedinShare } from "react-share-kit";
+import { formatDate } from "../../utils/format";
 
 export const CertificationStatus = {
   CERTIFIED: "CERTIFIED",
@@ -61,8 +62,10 @@ interface CertificationCardProps {
   image: string;
   title: string;
   description: string;
-  status: string;
-  emitor: string;
+  status?: string;
+  issuedBy: string;
+  issuedOn: string;
+  identifiant: string;
   owner?: string;
   tags?: { value: string; label: string; color: string }[];
   tagsValue?: string[];
@@ -78,7 +81,9 @@ const CertificationCard = (props: CertificationCardProps) => {
     title,
     description,
     status,
-    emitor,
+    identifiant,
+    issuedBy,
+    issuedOn,
     owner,
     tags,
     tagsValue,
@@ -88,16 +93,6 @@ const CertificationCard = (props: CertificationCardProps) => {
     isLoading,
   } = props;
 
-  const navigate = useNavigate();
-  const handlePreview = (certificateData: CertificationCardProps) => {
-    const url = "https://www.linkedin.com/shareArticle";
-    const params = new URLSearchParams({
-      url: "https://example.com/certificate",
-    });
-    const urlRedirection = `${url}?${params.toString()}`;
-    window.open(urlRedirection, "_blank", "rel=noopener noreferrer");
-  };
-
   const displayedTags = tags || tagsValue?.map(getTagDetails);
 
   return (
@@ -106,7 +101,7 @@ const CertificationCard = (props: CertificationCardProps) => {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={image} />
-        <meta property="og:url" content="https://example.com/certificate" />
+        <meta property="og:url" content={window.location.href} />
         <meta property="og:type" content="website" />
       </Helmet>
       <Card maxW="sm" h={"100%"} overflow="hidden">
@@ -133,7 +128,17 @@ const CertificationCard = (props: CertificationCardProps) => {
             </Skeleton>
             <Skeleton isLoaded={!isLoading}>
               <Text fontSize="sm" as="i">
-                Issued by: {emitor}
+                Issued by: {issuedBy}
+              </Text>
+            </Skeleton>
+            <Skeleton isLoaded={!isLoading}>
+              <Text fontSize="sm" as="i">
+                Issued on: {formatDate(issuedOn)}
+              </Text>
+            </Skeleton>
+            <Skeleton isLoaded={!isLoading}>
+              <Text fontSize="sm" as="i">
+                Certificate ID: {identifiant}
               </Text>
             </Skeleton>
             <Skeleton isLoaded={!isLoading}>

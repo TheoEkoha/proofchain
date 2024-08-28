@@ -28,7 +28,7 @@ const Header = () => {
                 px: "2",
                 py: "1",
                 rounded: "full",
-                bg: "blue.200",
+                bg: "blue.300",
               }}
             >
               Discover the future of certification,
@@ -41,7 +41,7 @@ const Header = () => {
                 px: "2",
                 py: "1",
                 rounded: "full",
-                bg: "teal.200",
+                bg: "teal.300",
               }}
             >
               Create a digital and lifetime signature

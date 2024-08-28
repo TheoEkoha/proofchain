@@ -34,8 +34,8 @@ export interface MultiStepFormData {
   title: string;
   description: string;
   tags: string[];
-  emitor: string;
-  dateOfObtention: string;
+  issuedBy: string;
+  issuedOn: string;
   file: File | null;
   image: File | null;
   identifiant: string;
@@ -112,8 +112,8 @@ export default function MultiStepForm({
         title: data.title,
         description: data.description,
         tags: data.tags,
-        emitor: data.emitor,
-        dateOfObtention: data.dateOfObtention,
+        issuedBy: data.issuedBy,
+        issuedOn: data.issuedOn,
         file: fileUri || "",
         image: imageUri || "",
         identifiant: data.identifiant,
@@ -208,7 +208,7 @@ export default function MultiStepForm({
               <Button
                 w="7rem"
                 isDisabled={step === 2}
-                colorScheme="teal"
+                colorScheme="blue"
                 variant="outline"
                 onClick={handleNext}
               >
@@ -222,7 +222,7 @@ export default function MultiStepForm({
               <Button
                 isLoading={contractLoading || uploadLoading || isMinting}
                 onClick={handleMint}
-                bgColor={"teal.400"}
+                bgColor={"blue.300"}
                 variant="solid"
                 spinnerPlacement="start"
                 textColor="white"

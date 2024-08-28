@@ -23,8 +23,8 @@ export interface TokenMetadata {
   title: string;
   description: string;
   tags: string[];
-  emitor: string;
-  dateOfObtention: string;
+  issuedBy: string;
+  issuedOn: string;
   file: string;
   image: string;
   identifiant: string;
@@ -54,6 +54,7 @@ export const Home = () => {
           const owner = await contract.call("ownerOf", [tokenId]);
           const metadata = await contract.call("getTokenMetadata", [tokenId]);
 
+          console.log(metadata);
           const tokenData: Token = {
             tokenId: tokenId.toString(),
             owner,
@@ -91,7 +92,7 @@ export const Home = () => {
       <Heading lineHeight="tall" pb={"2%"}>
         <Highlight
           query="claimed"
-          styles={{ px: "2", py: "1", rounded: "full", bg: "blue.100" }}
+          styles={{ px: "2", py: "1", rounded: "full", bg: "blue.300" }}
         >
           ProofChain's claimed certificates
         </Highlight>
@@ -110,7 +111,9 @@ export const Home = () => {
                   title={token.metadata.title}
                   image={token.metadata.image}
                   status={CertificationStatus.CERTIFIED}
-                  emitor={token.metadata.emitor}
+                  issuedBy={token.metadata.issuedBy}
+                  issuedOn={token.metadata.issuedOn}
+                  identifiant={token.metadata.identifiant}
                   tagsValue={token.metadata.tags}
                   description={token.metadata.description}
                   displayDivider
