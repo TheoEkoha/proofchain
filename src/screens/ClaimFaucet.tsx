@@ -31,12 +31,16 @@ export const ClaimFaucet = () => {
         </Highlight>
       </Heading>
       <Heading as="h4" size="md" lineHeight="tall">
-        Follow instructions to claim free ETH to create your digital
-        certificate, it allows you to sign transactions on blockchain
+        Follow the instructions to claim free ETH to create your digital
+        certificate.
       </Heading>
-      <Heading as="h6" size="xs" lineHeight="tall" pb={"2%"}>
+      <Heading as="h4" size="md" lineHeight="tall">
+        This processus will allow you to sign different transactions on the
+        blockchain.
+      </Heading>
+      <Heading pt={"2%"} as="h6" size="xs" lineHeight="tall" pb={"2%"}>
         Be careful, this is not real money, this is only on testnet network
-        (Arbitrum Sepolia), thanks
+        (Arbitrum Sepolia).
       </Heading>
       <Stack pb={"3%"}>
         <Heading as="h2" size="xl" lineHeight="tall">
@@ -47,14 +51,16 @@ export const ClaimFaucet = () => {
           <Link target="_blank" href="https://thirdweb.com/arbitrum-sepolia">
             {" https://thirdweb.com/arbitrum-sepolia "}
           </Link>
-          to access Arbitrum Sepolia Faucet
+          to access the Arbitrum Sepolia Faucet
         </Text>
       </Stack>
       <Stack pb={"3%"}>
         <Heading as="h2" size="xl" lineHeight="tall">
           2. Connect
         </Heading>
-        <Text>You can use your wallet or classic auth</Text>
+        <Text>
+          You can use your wallet or other standard authentification system
+        </Text>
         <Stack direction="row">
           <Image src={step1} alt="Dan Abramov" />
         </Stack>
@@ -63,7 +69,7 @@ export const ClaimFaucet = () => {
         <Heading as="h2" size="xl" lineHeight="tall">
           3. Claim your free ETH
         </Heading>
-        <Text>You can get 0,01 ETH/day.</Text>
+        <Text>You can collect 0,01 ETH/day.</Text>
         <Stack direction="row">
           <Image src={step3} alt="Dan Abramov" />
         </Stack>
@@ -73,7 +79,7 @@ export const ClaimFaucet = () => {
           4. Congratulations
         </Heading>
         <Stack>
-          <Text>You can get now create your certificate just here</Text>
+          <Text>Click here, to create your new certificate</Text>
           <Link href={"/create-digital-certification"}>
             <Button colorScheme="blue" size="lg">
               Create my certificate
