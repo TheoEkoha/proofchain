@@ -7,6 +7,9 @@ export const clientId = import.meta.env.VITE_TEMPLATE_CLIENT_ID;
 export const secretKey = import.meta.env.VITE_TEMPLATE_SECRET_KEY;
 export const smartContractAddressSepolia = import.meta.env.VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA;
 
+console.log("client Id", clientId)
+console.log("secretKey", secretKey)
+console.log("smartContractAddressSepolia", smartContractAddressSepolia)
 export const client = createThirdwebClient({
   clientId: clientId,
   secretKey: secretKey
