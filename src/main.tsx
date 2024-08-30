@@ -15,7 +15,15 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider contextSharing={true} client={queryClient}>
-      <ThirdwebProvider clientId={client.clientId} activeChain={421614}>
+      <ThirdwebProvider
+        dAppMeta={{
+          name: "ProofChain",
+          url: "https://proofchain-six.vercel.app",
+        }}
+        clientId={client.clientId}
+        activeChain={421614}
+        queryClient={queryClient}
+      >
         <ThirdwebProviderV5>
           <ChakraProvider theme={theme}>
             <ColorModeScript initialColorMode={theme.config.initialColorMode} />

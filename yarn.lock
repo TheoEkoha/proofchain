@@ -9198,10 +9198,10 @@ thirdweb@5.29.6:
     uqr "0.1.2"
     viem "2.13.7"
 
-thirdweb@^5:
-  version "5.48.1"
-  resolved "https://registry.yarnpkg.com/thirdweb/-/thirdweb-5.48.1.tgz#4b733d465a005e46290be65b249ab23cc5677926"
-  integrity sha512-iICpPHGoOsxR+yd6tJlBZ0jkmet8j2KrmQcHZffjfC9X4LqXRKf/mVha/K62lnHpfFriLtB5/0LoASxyfLs6lg==
+thirdweb@^5.49.0:
+  version "5.49.0"
+  resolved "https://registry.yarnpkg.com/thirdweb/-/thirdweb-5.49.0.tgz#3928c2f58366d0f1c35a9e4e2e22eb4a61515c7c"
+  integrity sha512-pDTiJ7ww1h15Zn8VKtmGOVVJ6DSVodx5DLhNnHr9TmQY8CgxNRS/b7CdG1hYasUMxvkp1NcFQbWXqt/uB9r8aA==
   dependencies:
     "@coinbase/wallet-sdk" "4.0.3"
     "@emotion/react" "11.11.4"
