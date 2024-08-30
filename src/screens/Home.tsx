@@ -67,8 +67,12 @@ export const Home = () => {
       }
     }
 
+    console.log("AlltokenData -> ", allTokensData);
     return allTokensData;
   };
+
+  console.log("contract -> ", contract);
+  console.log("address -> ", address);
 
   const {
     data: allTokens = [],
