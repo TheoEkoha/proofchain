@@ -31,12 +31,17 @@ export interface TokenMetadata {
 }
 
 export const Home = () => {
-  const { contract } = useContract(smartContractAddressSepolia);
+  const { contract, error: contractError } = useContract(
+    smartContractAddressSepolia,
+  );
   const address = useAddress();
 
+  console.log("error ", contractError);
   const fetchTokens = async (): Promise<Token[]> => {
-    if (!contract) return [];
-
+    if (!contract) {
+      console.log("contract not found");
+      return [];
+    }
     const currentTokenIdBigNumber: BigNumber =
       await contract.call("getCurrentTokenId");
     const currentTokenId = currentTokenIdBigNumber.toNumber();
@@ -79,8 +84,8 @@ export const Home = () => {
     isLoading,
     error,
     refetch,
-  } = useQuery(["tokens", contract?.getAddress(), address], fetchTokens, {
-    enabled: !!contract && !!address,
+  } = useQuery(["tokens", contract?.getAddress()], fetchTokens, {
+    enabled: !!contract,
     onError: (err) => {
       console.error("Query failed: ", err);
     },
