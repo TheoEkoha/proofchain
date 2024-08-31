@@ -1,5 +1,7 @@
-import React from "react";
-import { useContract, useAddress } from "@thirdweb-dev/react";
+import React, { useEffect, useState } from "react";
+import { getContract } from "thirdweb";
+import { sepolia } from "thirdweb/chains";
+import { useReadContract, useActiveWallet } from "thirdweb/react";
 import { BigNumber } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import CertificationCard, {
@@ -7,6 +9,7 @@ import CertificationCard, {
 } from "../components/Card/CertificationCard.component";
 import CertificationCardSkeleton from "../components/Card/CertificationCardSkeleton.component";
 import { Grid, GridItem, Heading, Highlight, Text } from "@chakra-ui/react";
+import { client } from "../client";
 
 const smartContractAddressSepolia = import.meta.env
   .VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
@@ -31,15 +34,37 @@ export interface TokenMetadata {
 }
 
 export const MyCertifications = () => {
-  const { contract } = useContract(smartContractAddressSepolia);
-  const address = useAddress();
+  const wallet = useActiveWallet(); // Obtention du portefeuille actif
+  const [address, setAddress] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (wallet) {
+      const account = wallet.getAccount();
+      setAddress(account?.address ?? null);
+    }
+  }, [wallet]);
+
+  // Initialise le contrat
+  const contract = getContract({
+    client, // Assurez-vous que `client` est défini correctement
+    address: smartContractAddressSepolia,
+    chain: sepolia,
+  });
+
+  // Fonction pour lire le nombre de tokens actuels
+  const { data: currentTokenIdBigNumber } = useReadContract({
+    contract,
+    method: "function getCurrentTokenId() returns (uint256)",
+    params: [],
+  });
+
+  // Si `currentTokenIdBigNumber` est undefined, initialisez à 0
+  const currentTokenId = currentTokenIdBigNumber
+    ? BigNumber.from(currentTokenIdBigNumber).toNumber()
+    : 0;
 
   const fetchTokens = async (): Promise<Token[]> => {
-    if (!contract) return [];
-
-    const currentTokenIdBigNumber: BigNumber =
-      await contract.call("getCurrentTokenId");
-    const currentTokenId = currentTokenIdBigNumber.toNumber();
+    if (!contract || !currentTokenId || !address) return [];
 
     const userTokensData: Token[] = [];
 
@@ -47,14 +72,18 @@ export const MyCertifications = () => {
       try {
         const currentTokenState: [boolean] = await contract.call(
           "getTokenState",
-          [tokenId],
+          [BigNumber.from(tokenId)],
         );
 
         if (currentTokenState[0]) {
-          const owner = await contract.call("ownerOf", [tokenId]);
+          const owner = await contract.call("ownerOf", [
+            BigNumber.from(tokenId),
+          ]);
 
           if (owner === address) {
-            const metadata = await contract.call("getTokenMetadata", [tokenId]);
+            const metadata = await contract.call("getTokenMetadata", [
+              BigNumber.from(tokenId),
+            ]);
 
             const tokenData: Token = {
               tokenId: tokenId.toString(),
@@ -77,7 +106,7 @@ export const MyCertifications = () => {
     isLoading,
     error,
     refetch,
-  } = useQuery(["tokens", contract?.getAddress(), address], fetchTokens, {
+  } = useQuery(["tokens", contract, address], fetchTokens, {
     enabled: !!contract && !!address,
     onError: (err) => {
       console.error("Query failed: ", err);
@@ -90,7 +119,6 @@ export const MyCertifications = () => {
 
   return (
     <div>
-      {" "}
       <Heading lineHeight="tall" pb={"2%"}>
         <Highlight
           query="certifications"

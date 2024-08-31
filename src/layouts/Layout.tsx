@@ -18,9 +18,7 @@ import { FaEthereum } from "react-icons/fa";
 import { IconType } from "react-icons";
 import { Connect } from "../components/Connect/ConnectButton.component";
 import { useNavigate } from "@tanstack/react-router";
-import { useAddress } from "@thirdweb-dev/react";
 import logo from "../assets/images/logo.webp";
-import { JSXElementConstructor, ReactElement } from "react";
 
 interface LinkItemProps {
   name: string;

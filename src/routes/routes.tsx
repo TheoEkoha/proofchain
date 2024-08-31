@@ -7,7 +7,7 @@ import {
 import { LandingPage } from "../screens/LandingPage";
 import { Layout } from "../layouts/Layout";
 import { About } from "../screens/About";
-import { getUserConnected, isUserConnected } from "../services/wallet.query";
+import { isUserConnected } from "../services/wallet.query";
 import { CreateDigitalCertification } from "../screens/CreateDigitalCertification";
 import { Home } from "../screens/Home";
 import { MyCertifications } from "../screens/MyCertifications";

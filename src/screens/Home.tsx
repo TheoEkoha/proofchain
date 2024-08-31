@@ -1,5 +1,5 @@
-import React from "react";
-import { useContract, useAddress } from "@thirdweb-dev/react";
+import React, { useEffect, useState } from "react";
+import { useContract } from "@thirdweb-dev/react";
 import { BigNumber } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import CertificationCard, {
@@ -7,6 +7,7 @@ import CertificationCard, {
 } from "../components/Card/CertificationCard.component";
 import CertificationCardSkeleton from "../components/Card/CertificationCardSkeleton.component";
 import { Grid, GridItem, Heading, Highlight } from "@chakra-ui/react";
+import { useActiveWallet } from "thirdweb/react";
 
 const smartContractAddressSepolia = import.meta.env
   .VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
@@ -34,7 +35,17 @@ export const Home = () => {
   const { contract, error: contractError } = useContract(
     smartContractAddressSepolia,
   );
-  const address = useAddress();
+  
+  const wallet  = useActiveWallet(); // Obtention du portefeuille actif
+  const [address, setAddress] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (wallet) {
+      const account = wallet.getAccount();
+      setAddress(account?.address ?? null);
+    }
+  }, [wallet]);
+
 
   console.log("error ", contractError);
   const fetchTokens = async (): Promise<Token[]> => {
