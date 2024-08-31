@@ -10,8 +10,10 @@ import { useFormContext } from "react-hook-form";
 import { DigitalInformationForm } from "./DigitalInformationForm";
 import { UploadForm } from "./UploadForm";
 import { MintForm } from "./MintForm";
+import { upload } from "thirdweb/storage";
 import { sendTransaction, getContract, prepareContractCall } from "thirdweb";
 import { sepolia } from "thirdweb/chains";
+import { client } from "../../client";
 
 const smartContractAddressSepolia = import.meta.env
   .VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
@@ -64,13 +66,34 @@ export default function MultiStepForm({
   const contract = getContract({
     address: smartContractAddressSepolia,
     chain: sepolia,
-    client: window.ethereum, // Utilisation de l'objet `window.ethereum` comme client
+    client
   });
 
-  // Fonction pour uploader des fichiers sur IPFS (utiliser votre propre méthode pour ceci)
   const uploadToIpfs = async (file: File | null, image: File | null) => {
-    // Remplacer par votre implémentation de téléchargement IPFS
-    return { fileUri: "ipfs://dummyFileUri", imageUri: "ipfs://dummyImageUri" };
+    if (!file || !image) {
+      console.error("File or Image not provided");
+      return { fileUri: null, imageUri: null };
+    }
+  
+    try {
+      const uris = await upload({
+        client: client,
+        files: [file, image],
+        options: { uploadWithGatewayUrl: true },
+      });
+  
+      // Le tableau `uris` contient les URLs des fichiers uploadés
+      const fileUri = uris?.[0] ?? null;
+      const imageUri = uris?.[1] ?? null;
+  
+      return {
+        fileUri,
+        imageUri,
+      };
+    } catch (error) {
+      console.error("Upload failed:", error);
+      return { fileUri: null, imageUri: null };
+    }
   };
 
   const handleMint = async () => {
