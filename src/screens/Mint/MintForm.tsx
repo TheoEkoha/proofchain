@@ -36,7 +36,7 @@ export const MintForm = ({ description }: { description: string }) => {
       <Box display={"flex"} justifyContent={"center"} mt={"2%"}>
         <CertificationCard
           title={certificationTitle}
-          image={window.URL.createObjectURL(image[0])}
+          image={image ? window.URL.createObjectURL(image[0]) : ""}
           status={CertificationStatus.CERTIFIED}
           issuedBy={issuedBy}
           issuedOn={issuedOn}

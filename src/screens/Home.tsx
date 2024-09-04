@@ -1,16 +1,18 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
-import { useContract } from "@thirdweb-dev/react";
-import { BigNumber } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import CertificationCard, {
   CertificationStatus,
 } from "../components/Card/CertificationCard.component";
 import CertificationCardSkeleton from "../components/Card/CertificationCardSkeleton.component";
 import { Grid, GridItem, Heading, Highlight } from "@chakra-ui/react";
-import { useActiveWallet } from "thirdweb/react";
+import { useReadContract, useReadContracts, useAccount } from 'wagmi';
+import { contractABI, contractConfig } from "../client";
+import { Abi } from "viem";
+import { random } from "lodash";
 
-const smartContractAddressSepolia = import.meta.env
-  .VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
+const smartContractAddressSepolia = import.meta.env.VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
 
 interface Token {
   tokenId: string;
@@ -32,79 +34,56 @@ export interface TokenMetadata {
 }
 
 export const Home = () => {
-  const { contract, error: contractError } = useContract(
-    smartContractAddressSepolia,
-  );
-  
-  const wallet  = useActiveWallet(); // Obtention du portefeuille actif
-  const [address, setAddress] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (wallet) {
-      const account = wallet.getAccount();
-      setAddress(account?.address ?? null);
-    }
-  }, [wallet]);
-
-
-  console.log("error ", contractError);
-  const fetchTokens = async (): Promise<Token[]> => {
-    if (!contract) {
-      console.log("contract not found");
-      return [];
-    }
-    const currentTokenIdBigNumber: BigNumber =
-      await contract.call("getCurrentTokenId");
-    const currentTokenId = currentTokenIdBigNumber.toNumber();
-
-    const allTokensData: Token[] = [];
-
-    for (let tokenId = 0; tokenId < currentTokenId; tokenId++) {
-      try {
-        const currentTokenState: [boolean] = await contract.call(
-          "getTokenState",
-          [tokenId],
-        );
-
-        if (currentTokenState[0]) {
-          const owner = await contract.call("ownerOf", [tokenId]);
-          const metadata = await contract.call("getTokenMetadata", [tokenId]);
-
-          const tokenData: Token = {
-            tokenId: tokenId.toString(),
-            owner,
-            metadata: JSON.parse(metadata) as TokenMetadata,
-          };
-
-          allTokensData.push(tokenData);
-        }
-      } catch (error) {
-        console.error(`Failed to fetch token ${tokenId}:`, error);
-      }
-    }
-
-    console.log("AlltokenData -> ", allTokensData);
-    return allTokensData;
-  };
-
-  console.log("contract -> ", contract);
-  console.log("address -> ", address);
-
-  const {
-    data: allTokens = [],
-    isLoading,
-    error,
-    refetch,
-  } = useQuery(["tokens", contract?.getAddress()], fetchTokens, {
-    enabled: !!contract,
-    onError: (err) => {
-      console.error("Query failed: ", err);
-    },
+  const [tokens, setTokens] = useState<Token[]>([]);
+  const { data: currentTokenIdBigNumber, isPending: isPendingCurrentTokenId } = useReadContract({
+    ...contractConfig,
+    functionName: 'getCurrentTokenId',
   });
 
-  if (error) {
-    return <div>Error fetching tokens: {(error as Error).message}</div>;
-  }
+  const currentTokenId = currentTokenIdBigNumber ? parseInt(currentTokenIdBigNumber.toString(), 10) : 0;
+  const calls = Array.from({ length: currentTokenId }, (_, tokenId) => [
+      {
+        ...contractConfig,
+        functionName: 'ownerOf',
+        args: [tokenId],
+      },
+      {
+        ...contractConfig,
+        functionName: 'getTokenMetadata',
+        args: [tokenId],
+      },
+    ]).flat();
+
+  const { data, isPending: isPendingAllFetch } = useReadContracts({
+    contracts: calls,
+  });
+
+  useEffect(() => {
+    if (data) {
+      const allTokensData: Token[] = [];
+      for (let i = 0; i < data.length; i += 2) {
+        const owner = data[i];
+        const metadataResponse = data[i + 1];
+
+        let metadata: TokenMetadata | null = null;
+        if (metadataResponse?.result) {
+          try {
+            metadata = JSON.parse(metadataResponse.result) as TokenMetadata;
+          } catch (error) {
+            console.log(error)
+          }
+        }
+        if (metadata) {
+          allTokensData.push({
+            tokenId: (i/2).toString(),
+            owner: owner?.result,
+            metadata,
+          });
+        }
+      }
+      setTokens(allTokensData);
+    }
+  }, [data]);
 
   return (
     <div>
@@ -116,29 +95,35 @@ export const Home = () => {
           ProofChain's claimed certificates
         </Highlight>
       </Heading>
-      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-        {isLoading
-          ? Array.from({ length: 4 }).map((_, index) => (
+      <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+        {isPendingCurrentTokenId && isPendingAllFetch && (
+          <>
+            {Array.from({ length: 4 }).map((_, index) => (
               <GridItem key={index} w="100%">
                 <CertificationCardSkeleton />
               </GridItem>
-            ))
-          : allTokens.map((token) => (
-              <GridItem key={token.tokenId} w="100%">
-                <CertificationCard
-                  owner={token.owner}
-                  title={token.metadata.title}
-                  image={token.metadata.image}
-                  status={CertificationStatus.CERTIFIED}
-                  issuedBy={token.metadata.issuedBy}
-                  issuedOn={token.metadata.issuedOn}
-                  identifiant={token.metadata.identifiant}
-                  tagsValue={token.metadata.tags}
-                  description={token.metadata.description}
-                  displayDivider
-                />
-              </GridItem>
             ))}
+          </> 
+        )}
+        {tokens.map((token, _index) => (
+          <>
+            <GridItem key={`grid-item-${token.tokenId}-${_index}`} w="100%">
+              <p>{token.tokenId}</p>
+              <CertificationCard
+                owner={token.owner}
+                title={token.metadata.title}
+                image={token.metadata.image}
+                status={CertificationStatus.CERTIFIED}
+                issuedBy={token.metadata.issuedBy}
+                issuedOn={token.metadata.issuedOn}
+                identifiant={token.metadata.identifiant}
+                tagsValue={token.metadata.tags}
+                description={token.metadata.description}
+                displayDivider
+              />
+            </GridItem>
+          </>
+        ))}
       </Grid>
     </div>
   );

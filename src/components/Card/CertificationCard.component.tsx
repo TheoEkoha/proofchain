@@ -140,10 +140,10 @@ const CertificationCard = (props: CertificationCardProps) => {
                 lineHeight="1.5rem"
               >
                 <Wrap spacing="8px">
-                  {displayedTags?.map((tag) => {
+                  {displayedTags?.map((tag, _index) => {
                     if (!(typeof tag.value === "object") && tag.value !== null)
                       return (
-                        <WrapItem key={tag.label}>
+                        <WrapItem key={`${tag.label}-${_index}`}>
                           <Tag size={"md"} variant="solid" bg={tag.color}>
                             {tag.label}
                           </Tag>

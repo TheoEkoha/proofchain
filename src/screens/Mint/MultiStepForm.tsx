@@ -10,10 +10,12 @@ import { useFormContext } from "react-hook-form";
 import { DigitalInformationForm } from "./DigitalInformationForm";
 import { UploadForm } from "./UploadForm";
 import { MintForm } from "./MintForm";
-import { upload } from "thirdweb/storage";
+import { upload, download } from "thirdweb/storage";
 import { sendTransaction, getContract, prepareContractCall } from "thirdweb";
 import { sepolia } from "thirdweb/chains";
-import { client } from "../../client";
+import { client, contractConfig } from "../../client";
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { ThirdwebStorage } from "@thirdweb-dev/storage";
 
 const smartContractAddressSepolia = import.meta.env
   .VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
@@ -45,11 +47,12 @@ export default function MultiStepForm({
   const methods = useFormContext<MultiStepFormData>();
   const { trigger, watch, reset } = methods;
   const [isMinting, setIsMinting] = useState(false);
+  const [isUploadingIpfs, setIsUploadingIpfs] = useState(false);
   const toast = useToast();
+  const { writeContract, writeContractAsync } = useWriteContract()
 
   const [account, setAccount] = useState<string | null>(null);
 
-  // Utilisation de useEffect pour récupérer le compte actif
   useEffect(() => {
     const getActiveAccount = async () => {
       if (window.ethereum) {
@@ -74,27 +77,29 @@ export default function MultiStepForm({
       console.error("File or Image not provided");
       return { fileUri: null, imageUri: null };
     }
-  
+    
+    const storage = new ThirdwebStorage({clientId: client.clientId});
+    setIsUploadingIpfs(true);
     try {
-      const uris = await upload({
-        client: client,
-        files: [file, image],
-        options: { uploadWithGatewayUrl: true },
+      const uris = await storage.upload({
+        file: file,
+        image: image
       });
-  
-      // Le tableau `uris` contient les URLs des fichiers uploadés
-      const fileUri = uris?.[0] ?? null;
-      const imageUri = uris?.[1] ?? null;
-  
+      const urlFetch = `https://ipfs.io/ipfs/${uris.split('ipfs://')[1]}`;
+      const data = await fetch(urlFetch);
+      const dataJson = await data.json();
+
+      setIsUploadingIpfs(false);
       return {
-        fileUri,
-        imageUri,
+        imageUri: dataJson ? dataJson?.image["0"] : null,
+        fileUri: dataJson ? dataJson?.file["0"] : null,
       };
     } catch (error) {
       console.error("Upload failed:", error);
       return { fileUri: null, imageUri: null };
     }
   };
+
 
   const handleMint = async () => {
     const data = watch();
@@ -113,7 +118,7 @@ export default function MultiStepForm({
 
     try {
       const { fileUri, imageUri } = await uploadToIpfs(data.file, data.image);
-
+      
       const metadata = {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -129,21 +134,16 @@ export default function MultiStepForm({
 
       setIsMinting(true);
 
-      // Préparation de l'appel du contrat pour le minting
-      const transaction = await prepareContractCall({
-        contract,
-        method: "mint",
-        params: [account, JSON.stringify(metadata)],
-      });
-
-      // Envoi de la transaction
-      const { transactionHash } = await sendTransaction({
-        account,
-        transaction,
-      });
+      await writeContractAsync({
+       ...contractConfig,
+        functionName: 'mint',
+        args: [
+          account,
+          JSON.stringify(metadata)
+        ],
+     })
 
       setIsMinting(false);
-      console.log("Transaction Hash:", transactionHash);
       toast({
         title: "Success !",
         description: "Your certificate has been successfully created.",
@@ -179,6 +179,7 @@ export default function MultiStepForm({
 
   const getButtonText = () => {
     if (isMinting) return "Transaction waiting...";
+    if (isUploadingIpfs) return "Upload waiting...";
     return "Create";
   };
 
@@ -205,7 +206,7 @@ export default function MultiStepForm({
             {step !== 0 && (
               <Button
                 onClick={() => setStep(step - 1)}
-                isLoading={isMinting}
+                isLoading={isUploadingIpfs || isMinting}
                 colorScheme="gray"
                 variant="solid"
                 w="7rem"
@@ -231,7 +232,7 @@ export default function MultiStepForm({
           {step === 2 && (
             <Flex direction="column" align="center">
               <Button
-                isLoading={isMinting}
+                isLoading={isUploadingIpfs || isMinting}
                 onClick={handleMint}
                 bgColor={"blue.300"}
                 variant="solid"

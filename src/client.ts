@@ -15,6 +15,10 @@ export const client = createThirdwebClient({
   secretKey: secretKey
 });
 
+
+import { http, createConfig } from 'wagmi'
+import { arbitrum, arbitrumSepolia } from 'wagmi/chains'
+
 export const contractABI = [
   {
     "inputs": [
@@ -522,3 +526,14 @@ export const contract = getContract({
   address: smartContractAddressSepolia,
   abi: contractABI
 });
+
+
+export const config = createConfig({
+  chains: [arbitrum, arbitrumSepolia],
+  transports: {
+    [arbitrum.id]: http(),
+    [arbitrumSepolia.id]: http(),
+  },
+})
+
+export const contractConfig = { address: smartContractAddressSepolia, abi: contractABI } as const;

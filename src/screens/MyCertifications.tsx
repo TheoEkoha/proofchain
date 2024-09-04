@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getContract } from "thirdweb";
 import { sepolia } from "thirdweb/chains";
-import { useReadContract, useActiveWallet } from "thirdweb/react";
 import { BigNumber } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 import CertificationCard, {
@@ -9,7 +8,8 @@ import CertificationCard, {
 } from "../components/Card/CertificationCard.component";
 import CertificationCardSkeleton from "../components/Card/CertificationCardSkeleton.component";
 import { Grid, GridItem, Heading, Highlight, Text } from "@chakra-ui/react";
-import { client } from "../client";
+import { client, contractConfig } from "../client";
+import { useAccount, useReadContract, useReadContracts } from "wagmi";
 
 const smartContractAddressSepolia = import.meta.env
   .VITE_TEMPLATE_SMART_CONTRACT_ADDRESS_SEPOLIA as string;
@@ -34,88 +34,61 @@ export interface TokenMetadata {
 }
 
 export const MyCertifications = () => {
-  const wallet = useActiveWallet(); // Obtention du portefeuille actif
-  const [address, setAddress] = useState<string | null>(null);
+  const account = useAccount()
+  const [tokens, setTokens] = useState<Token[]>([]);
+  const { data: currentTokenIdBigNumber, isPending: isPendingCurrentTokenId } = useReadContract({
+    ...contractConfig,
+    functionName: 'getCurrentTokenId',
+  });
+
+  const currentTokenId = currentTokenIdBigNumber ? parseInt(currentTokenIdBigNumber.toString(), 10) : 0;
+  const calls = Array.from({ length: currentTokenId }, (_, tokenId) => [
+      {
+        ...contractConfig,
+        functionName: 'ownerOf',
+        args: [tokenId],
+      },
+      {
+        ...contractConfig,
+        functionName: 'getTokenMetadata',
+        args: [tokenId],
+      },
+    ]).flat();
+
+  const { data, isPending: isPendingAllFetch } = useReadContracts({
+    contracts: calls,
+  });
 
   useEffect(() => {
-    if (wallet) {
-      const account = wallet.getAccount();
-      setAddress(account?.address ?? null);
-    }
-  }, [wallet]);
+    if (data) {
+      const allTokensData: Token[] = [];
+      for (let i = 0; i < data.length; i += 2) {
+        const owner = data[i];
+        const metadataResponse = data[i + 1];
 
-  // Initialise le contrat
-  const contract = getContract({
-    client, // Assurez-vous que `client` est défini correctement
-    address: smartContractAddressSepolia,
-    chain: sepolia,
-  });
-
-  // Fonction pour lire le nombre de tokens actuels
-  const { data: currentTokenIdBigNumber } = useReadContract({
-    contract,
-    method: "function getCurrentTokenId() returns (uint256)",
-    params: [],
-  });
-
-  // Si `currentTokenIdBigNumber` est undefined, initialisez à 0
-  const currentTokenId = currentTokenIdBigNumber
-    ? BigNumber.from(currentTokenIdBigNumber).toNumber()
-    : 0;
-
-  const fetchTokens = async (): Promise<Token[]> => {
-    if (!contract || !currentTokenId || !address) return [];
-
-    const userTokensData: Token[] = [];
-
-    for (let tokenId = 0; tokenId < currentTokenId; tokenId++) {
-      try {
-        const currentTokenState: [boolean] = await contract.call(
-          "getTokenState",
-          [BigNumber.from(tokenId)],
-        );
-
-        if (currentTokenState[0]) {
-          const owner = await contract.call("ownerOf", [
-            BigNumber.from(tokenId),
-          ]);
-
-          if (owner === address) {
-            const metadata = await contract.call("getTokenMetadata", [
-              BigNumber.from(tokenId),
-            ]);
-
-            const tokenData: Token = {
-              tokenId: tokenId.toString(),
-              owner,
-              metadata: JSON.parse(metadata) as TokenMetadata,
-            };
-            userTokensData.push(tokenData);
+        let metadata: TokenMetadata | null = null;
+        if (metadataResponse?.result) {
+          try {
+            metadata = JSON.parse(metadataResponse.result) as TokenMetadata;
+          } catch (error) {
+            console.log(error)
           }
         }
-      } catch (error) {
-        console.error(`Failed to fetch token ${tokenId}:`, error);
+        if (metadata && account?.address === owner) {
+          allTokensData.push({
+            tokenId: (i/2).toString(),
+            owner: owner?.result,
+            metadata,
+          });
+        }
       }
+      setTokens(allTokensData);
     }
+  }, [data]);
 
-    return userTokensData;
-  };
+  console.log("is pendingg ", isPendingAllFetch)
+  console.log("is length ", tokens.length)
 
-  const {
-    data: userTokensData = [],
-    isLoading,
-    error,
-    refetch,
-  } = useQuery(["tokens", contract, address], fetchTokens, {
-    enabled: !!contract && !!address,
-    onError: (err) => {
-      console.error("Query failed: ", err);
-    },
-  });
-
-  if (error) {
-    return <div>Error fetching tokens: {(error as Error).message}</div>;
-  }
 
   return (
     <div>
@@ -127,19 +100,19 @@ export const MyCertifications = () => {
           My certifications
         </Highlight>
       </Heading>
-      {!isLoading && userTokensData.length === 0 ? (
+      {isPendingAllFetch !== undefined && tokens.length === 0 ? (
         <Text>Sorry, you have no certification yet</Text>
       ) : (
         ""
       )}
       <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-        {isLoading
+        {isPendingAllFetch
           ? Array.from({ length: 4 }).map((_, index) => (
               <GridItem key={index} w="100%">
                 <CertificationCardSkeleton />
               </GridItem>
             ))
-          : userTokensData.map((token) => (
+          : tokens.map((token) => (
               <GridItem key={token.tokenId} w="100%">
                 <CertificationCard
                   title={token.metadata.title}
