@@ -19,6 +19,8 @@ import { IconType } from "react-icons";
 import { Connect } from "../components/Connect/ConnectButton.component";
 import { useNavigate } from "@tanstack/react-router";
 import logo from "../assets/images/logo.webp";
+import TestnetFooter from "./TestnetFooter";
+import Footer from "./Footer";
 
 interface LinkItemProps {
   name: string;
@@ -64,7 +66,7 @@ export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       bg={useColorModeValue("white", "gray.900")}
       borderRight="1px"
       borderRightColor={useColorModeValue("gray.200", "gray.700")}
-      w={{ base: "full", md: 60 }}
+      w={{ base: "full", lg: 60 }}
       pos="fixed"
       h="full"
       {...rest}
@@ -78,7 +80,7 @@ export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       >
         <img src={logo} alt="" className="size-[50px] md:size-[50px]" />
         <Text fontSize="xl">ProofChain</Text>
-        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
+        <CloseButton display={{ base: "flex", lg: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
         <NavItem key={link.name} to={link.to} icon={link.icon}>
@@ -88,6 +90,7 @@ export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     </Box>
   );
 };
+
 
 const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
   return (
@@ -129,25 +132,25 @@ const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   return (
     <Flex
-      ml={{ base: 0, md: 60 }}
-      px={{ base: 4, md: 4 }}
+      ml={{ base: 0, lg: 60 }}
+      px={{ base: 4, lg: 4 }}
       height="20"
       alignItems="center"
       bg={useColorModeValue("white", "gray.900")}
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent={{ base: "space-between", md: "flex-end" }}
+      justifyContent={{ base: "space-between", lg: "flex-end" }}
       {...rest}
     >
       <IconButton
-        display={{ base: "flex", md: "none" }}
+        display={{ base: "flex", lg: "none" }}
         onClick={onOpen}
         variant="outline"
         aria-label="open menu"
         icon={<FiMenu />}
       />
 
-      <HStack spacing={{ base: "0", md: "6" }}>
+      <HStack spacing={{ base: "0", lg: "6" }}>
         <Flex alignItems={"center"}>
           <HStack>
             <Connect />
@@ -157,6 +160,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     </Flex>
   );
 };
+
 
 export const Layout =
   (Component: React.FC) =>
@@ -168,12 +172,12 @@ export const Layout =
         {/* Sidebar Content */}
         <SidebarContent
           onClose={onClose}
-          display={{ base: "none", md: "block" }}
+          display={{ base: "none", lg: "block" }}
         />
 
         <Drawer
           isOpen={isOpen}
-          placement="left"
+          placement="right"
           onClose={onClose}
           returnFocusOnClose={false}
           onOverlayClick={onClose}
@@ -188,9 +192,10 @@ export const Layout =
         <MobileNav onOpen={onOpen} />
 
         {/* Main Content Area */}
-        <Box ml={{ base: 0, md: 60 }} p="4">
+        <Box ml={{ base: 0, lg: 60 }} p="4">
           <Component {...props} />
         </Box>
       </Box>
+      
     );
   };

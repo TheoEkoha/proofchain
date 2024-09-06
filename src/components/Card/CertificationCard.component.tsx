@@ -74,6 +74,7 @@ interface CertificationCardProps {
   shareable?: boolean;
   shareableViewOnly?: boolean;
   isLoading?: boolean;
+  isMinted?: boolean;
 }
 
 const CertificationCard = (props: CertificationCardProps) => {
@@ -92,6 +93,7 @@ const CertificationCard = (props: CertificationCardProps) => {
     shareable,
     shareableViewOnly,
     isLoading,
+    isMinted = true
   } = props;
 
   const displayedTags = tags || tagsValue?.map(getTagDetails);
@@ -101,14 +103,23 @@ const CertificationCard = (props: CertificationCardProps) => {
       <Card maxW="sm" h={"100%"} overflow="hidden">
         <CardBody>
           <Skeleton isLoaded={!isLoading}>
-            <MediaRenderer 
+            {isMinted ? (
+              <MediaRenderer 
               style={{
                 objectFit: "contain",
                 maxHeight: "100%",
+                width: "100%",
                 borderRadius: "lg"
               }}
               src={image}
               alt="Certification image" client={client}/>
+            ): (<Image
+              objectFit="contain"
+              src={image}
+              maxH={{ base: "100%", sm: "250px" }}
+              alt="Certification image"
+              borderRadius="lg"
+            />)}
           </Skeleton>
           <Stack mt="6" spacing="3">
             <Skeleton isLoaded={!isLoading}>

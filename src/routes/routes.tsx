@@ -15,6 +15,7 @@ import { ClaimFaucet } from "../screens/ClaimFaucet";
 import Footer from "../layouts/Footer";
 import TestnetFooter from "../layouts/TestnetFooter";
 import React from "react";
+import { Box } from "@chakra-ui/react";
 
 function ProtectedRoute({ children }: { children: React.ReactElement }) {
   const address = isUserConnected();
@@ -31,8 +32,11 @@ const rootRoute = createRootRoute({
     <div>
       <>
         <Outlet />
-        <TestnetFooter></TestnetFooter>
-        <Footer></Footer>
+        <Box ml={{ base: 0, lg: 60 }}>
+          <TestnetFooter></TestnetFooter>
+          <Footer></Footer>
+        </Box>
+       
       </>
     </div>
   ),

@@ -42,6 +42,7 @@ export const MintForm = ({ description }: { description: string }) => {
           issuedOn={issuedOn}
           identifiant={identifiant}
           tagsValue={tags}
+          isMinted={false}
           description={certificationDescription}
         />
       </Box>
