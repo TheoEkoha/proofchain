@@ -105,7 +105,6 @@ export const Home = () => {
             ))
           : tokens.map((token, _index) => (
             <GridItem key={`grid-item-${token.tokenId}-${_index}`} w="100%">
-              <p>{token.tokenId}</p>
                 <CertificationCard
                   title={token.metadata.title}
                   image={token.metadata.image}
