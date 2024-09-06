@@ -8,6 +8,7 @@ import {
   useHighlight,
   Stack,
   HStack,
+  VStack,
 } from "@chakra-ui/react";
 
 const Header = () => {
@@ -15,13 +16,13 @@ const Header = () => {
     <>
       <div className="flex flex-col items-center mb-20 md:mb-20">
         <div>
-          <HStack>
-            <img src={logo} alt="" className="size-[350px] md:size-[350px]" />
+          <VStack spacing={10} paddingBottom={6}>
+            <img src={logo} alt="" className="size-[250px] md:size-[250px]" />
             <Heading as="h1" mb={5} size="4xl" noOfLines={1}>
               ProofChain
             </Heading>
-          </HStack>
-          <Heading as={"h2"} lineHeight="md">
+          </VStack>
+          <Heading as={"h2"} textAlign="center" lineHeight="md">
             <Highlight
               query={["certification", "diplomas"]}
               styles={{
@@ -34,7 +35,7 @@ const Header = () => {
               Discover the future of certification,
             </Highlight>
           </Heading>
-          <Heading as={"h2"} lineHeight="md" color={"white"}>
+          <Heading as={"h2"} textAlign="center" lineHeight="md" color={"white"}>
             <Highlight
               query={["digital"]}
               styles={{

@@ -71,17 +71,19 @@ export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       h="full"
       {...rest}
     >
-      <Flex
-        h="20"
-        alignItems="center"
-        mx="8"
-        style={{ cursor: "pointer" }}
-        onClick={() => navigate({ to: "/" })}
-      >
-        <img src={logo} alt="" className="size-[50px] md:size-[50px]" />
-        <Text fontSize="xl">ProofChain</Text>
+      <HStack>
+        <Flex
+          h="20"
+          alignItems="center"
+          mx="8"
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate({ to: "/" })}
+        >
+          <img src={logo} alt="" className="size-[50px] md:size-[50px]" />
+          <Text fontSize="xl">ProofChain</Text>
+        </Flex>
         <CloseButton display={{ base: "flex", lg: "none" }} onClick={onClose} />
-      </Flex>
+      </HStack>
       {LinkItems.map((link) => (
         <NavItem key={link.name} to={link.to} icon={link.icon}>
           {link.name}

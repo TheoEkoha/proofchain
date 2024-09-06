@@ -3,6 +3,8 @@ import {
   createRoute,
   Navigate,
   Outlet,
+  useRouter,
+  useMatches
 } from "@tanstack/react-router";
 import { LandingPage } from "../screens/LandingPage";
 import { Layout } from "../layouts/Layout";
@@ -14,7 +16,7 @@ import { MyCertifications } from "../screens/MyCertifications";
 import { ClaimFaucet } from "../screens/ClaimFaucet";
 import Footer from "../layouts/Footer";
 import TestnetFooter from "../layouts/TestnetFooter";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 
 function ProtectedRoute({ children }: { children: React.ReactElement }) {
@@ -28,18 +30,31 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
 }
 
 const rootRoute = createRootRoute({
-  component: () => (
-    <div>
-      <>
-        <Outlet />
-        <Box ml={{ base: 0, lg: 60 }}>
-          <TestnetFooter></TestnetFooter>
-          <Footer></Footer>
-        </Box>
-       
-      </>
-    </div>
-  ),
+  component: () => {
+    const matches = useMatches();
+    const [marginLeft, setMarginLeft] = useState("60");
+
+    useEffect(() => {
+      const currentPath = matches[matches.length - 1]?.pathname;
+      if (currentPath === "/" || currentPath === "/about") {
+        setMarginLeft("0");
+      } else {
+        setMarginLeft("60");
+      }
+    }, [matches]);
+
+    return (
+      <div>
+        <>
+          <Outlet />
+          <Box ml={{ base: 0, lg: marginLeft }}>
+            <TestnetFooter />
+            <Footer />
+          </Box>
+        </>
+      </div>
+    );
+  },
 });
 
 export const indexRoute = createRoute({

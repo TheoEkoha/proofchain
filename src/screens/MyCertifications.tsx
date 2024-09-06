@@ -7,7 +7,7 @@ import CertificationCard, {
   CertificationStatus,
 } from "../components/Card/CertificationCard.component";
 import CertificationCardSkeleton from "../components/Card/CertificationCardSkeleton.component";
-import { Grid, GridItem, Heading, Highlight, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Heading, Highlight, SimpleGrid, Text } from "@chakra-ui/react";
 import { client, contractConfig } from "../client";
 import { useAccount, useReadContract, useReadContracts } from "wagmi";
 
@@ -127,15 +127,15 @@ export const MyCertifications = () => {
       ) : (
         ""
       )}
-      <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+      <SimpleGrid minChildWidth="300px" columns={3} spacing='50px'>
         {isLoadingAllFetch
           ? Array.from({ length: 4 }).map((_, index) => (
-              <GridItem key={index} w="100%">
+              <Box key={index} w="100%">
                 <CertificationCardSkeleton />
-              </GridItem>
+              </Box>
             ))
           : tokens.map((token) => (
-              <GridItem key={token.tokenId} w="100%">
+              <Box key={token.tokenId} w="100%">
                 <CertificationCard
                   title={token.metadata.title}
                   image={token.metadata.image}
@@ -146,9 +146,9 @@ export const MyCertifications = () => {
                   description={token.metadata.description}
                   shareable
                 />
-              </GridItem>
+              </Box>
             ))}
-      </Grid>
+      </SimpleGrid>
     </div>
   );
 };

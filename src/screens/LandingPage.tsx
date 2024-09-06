@@ -65,7 +65,7 @@ export const LandingPage = () => {
         <div>
           <Header />
           <Stack className="flex justify-center mb-20">
-            <SimpleGrid columns={2} spacing={4}>
+            <SimpleGrid minChildWidth="300px" columns={3} spacing='50px'>
               <CertificationCard
                 title="Certified Web 3.0 Professional (CW3P)"
                 image={CW3PImage}
@@ -96,121 +96,9 @@ export const LandingPage = () => {
           </Stack>
           <Divider mb={10} />
           <FeaturesGrid></FeaturesGrid>
-          {/* <Stack className="flex justify-center mb-20">
-            <Heading lineHeight="tall">
-              <Highlight
-                query="skills"
-                styles={{ px: "2", py: "1", rounded: "full", bg: "teal.300" }}
-              >
-                Skills Management
-              </Highlight>
-            </Heading>
-            <Text fontSize="xl">
-              Organize and share your digital certification securely
-            </Text>
-            <SimpleGrid
-              mt={10}
-              minChildWidth="120px"
-              spacing="40px"
-              columns={2}
-            >
-              <Card
-                direction={{ base: "column", sm: "row" }}
-                overflow="hidden"
-                variant="outline"
-              >
-                <Image
-                  objectFit="cover"
-                  maxW={{ base: "100%", sm: "150px" }}
-                  src="https://d1.awsstatic.com/certification/badges/AWS-Certified-Data-Engineer-Associate_badge_300x300.a231ff0ff32a28adf061d3f7fa36564964b4a4b5.png"
-                  alt="AWS Certified Data Engineer"
-                />
-                <Stack>
-                  <CardBody>
-                    <Heading size="md">Public certification</Heading>
-                    <Text fontSize="sm">
-                      Display your skills visible to all
-                    </Text>
-                  </CardBody>
-                  <CardFooter>
-                    <VStack align="start">
-                      <HStack>
-                        <Tag variant={"solid"} bgColor="purple.400">
-                          Data
-                        </Tag>
-                        <Tag variant={"solid"} bgColor="red.500">
-                          DevOps
-                        </Tag>
-                      </HStack>
-                      <HStack>
-                        <Wrap>
-                          <WrapItem>
-                            <Avatar
-                              mr={0.5}
-                              size="xs"
-                              name="John Doe"
-                              src="https://bit.ly/dan-abramov"
-                            />
-                            <Text>John Doe </Text>
-                          </WrapItem>
-                        </Wrap>
-                      </HStack>
-                    </VStack>
-                  </CardFooter>
-                </Stack>
-              </Card>
-              <Card
-                direction={{ base: "column", sm: "row" }}
-                overflow="hidden"
-                variant="outline"
-              >
-                <Image
-                  objectFit="cover"
-                  maxW={{ base: "100%", sm: "150px" }}
-                  src="https://d1.awsstatic.com/certification/badges/AWS-Certified-Data-Engineer-Associate_badge_300x300.a231ff0ff32a28adf061d3f7fa36564964b4a4b5.png"
-                  alt="AWS Certified Data Engineer"
-                />
-                <Stack>
-                  <CardBody>
-                    <Heading size="md">Private certification</Heading>
-                    <Text fontSize="sm">
-                      Keep some certifications confidential
-                    </Text>
-                  </CardBody>
-                  <CardFooter>
-                    <VStack align="start">
-                      <Tag>Private</Tag>
-                    </VStack>
-                  </CardFooter>
-                </Stack>
-              </Card>
-            </SimpleGrid>
-          </Stack>
-          <Stack className="flex justify-center mb-20">
-            <Heading lineHeight="tall">
-              <Highlight
-                query="share"
-                styles={{ px: "2", py: "1", rounded: "full", bg: "teal.300" }}
-              >
-                Share with people
-              </Highlight>
-            </Heading>
-            <Text fontSize="xl">
-              Share, publy easily your certificates on social media.
-            </Text>
-            <HStack spacing={4} mt={4} justify={"space-evenly"}>
-              <Image
-                boxSize="100px"
-                src={
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png"
-                }
-              />
-              <XIcon size={100} round />
-            </HStack>
-          </Stack> */}
           <Divider mt={10} mb={10} />
           <Stack className="flex justify-center mb-20">
-            <Heading lineHeight="tall">
+            <Heading textAlign="center" lineHeight="tall">
               <Highlight
                 query="certification"
                 styles={{ px: "2", py: "1", rounded: "full", bg: "blue.300" }}
@@ -218,29 +106,31 @@ export const LandingPage = () => {
                 Create a new certification
               </Highlight>
             </Heading>
-            <Text fontSize="xl">
+            <Text textAlign="center" fontSize="xl">
               Submit your evidence for a certified assessment, make your career
               efficient !
             </Text>
             <Box mt={10}>
               <FormControl>
-                <Grid
-                  h="200px"
-                  templateRows="repeat(2, 1fr)"
-                  templateColumns="repeat(5, 1fr)"
-                  gap={4}
-                >
+                <SimpleGrid spacing='50px'>
                   <GridItem colSpan={3}>
                     <FormLabel>Title</FormLabel>
                     <Input
                       placeholder="Linux foundation - Product Manager"
                       type="text"
                     />
-                    {/*<FormHelperText>We'll never share your email.</FormHelperText>*/}
                   </GridItem>
-                  <GridItem colStart={4} colEnd={6}>
+                  <GridItem colSpan={3}>
                     <FormLabel>Issued by</FormLabel>
                     <Input placeholder="Linux foundation" type="text" />
+                  </GridItem>
+                  <GridItem colSpan={3} >
+                    <FormLabel>Issued on</FormLabel>
+                    <Input
+                      placeholder="Date of obtention"
+                      size="md"
+                      type="date"
+                    />
                   </GridItem>
                   <GridItem colSpan={3} maxWidth="100%">
                     <FormLabel>Tag(s)</FormLabel>
@@ -279,15 +169,9 @@ export const LandingPage = () => {
                       size="md"
                     />
                   </GridItem>
-                  <GridItem colStart={4} colEnd={6}>
-                    <FormLabel>Issued on</FormLabel>
-                    <Input
-                      placeholder="Date of obtention"
-                      size="md"
-                      type="date"
-                    />
-                  </GridItem>
-                </Grid>
+                  
+                {/* </Grid> */}
+                </SimpleGrid>
               </FormControl>
             </Box>
             <Stack textAlign="center" alignContent={"center"}>
