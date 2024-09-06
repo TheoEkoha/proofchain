@@ -32,6 +32,8 @@ import {
 } from "react-share";
 import { LinkedinShare } from "react-share-kit";
 import { formatDate } from "../../utils/format";
+import { MediaRenderer } from "thirdweb/react";
+import { client } from "../../client";
 
 export const CertificationStatus = {
   CERTIFIED: "CERTIFIED",
@@ -99,13 +101,14 @@ const CertificationCard = (props: CertificationCardProps) => {
       <Card maxW="sm" h={"100%"} overflow="hidden">
         <CardBody>
           <Skeleton isLoaded={!isLoading}>
-            <Image
-              objectFit="contain"
+            <MediaRenderer 
+              style={{
+                objectFit: "contain",
+                maxHeight: "100%",
+                borderRadius: "lg"
+              }}
               src={image}
-              maxH={{ base: "100%", sm: "250px" }}
-              alt="Certification image"
-              borderRadius="lg"
-            />
+              alt="Certification image" client={client}/>
           </Skeleton>
           <Stack mt="6" spacing="3">
             <Skeleton isLoaded={!isLoading}>

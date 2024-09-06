@@ -111,7 +111,7 @@ const MenuLinks = ({ isOpen }: { isOpen: boolean }) => {
           )}
           {account && (
             <MenuItem to="/claim-faucet" isLast={false}>
-              <> Claim Faucet</>
+              <> Claim free ETH</>
             </MenuItem>
           )}
           <MenuItem to="/about" isLast={true}>

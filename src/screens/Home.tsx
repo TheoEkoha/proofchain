@@ -35,7 +35,7 @@ export interface TokenMetadata {
 
 export const Home = () => {
   const [tokens, setTokens] = useState<Token[]>([]);
-  const { data: currentTokenIdBigNumber, isPending: isPendingCurrentTokenId } = useReadContract({
+  const { data: currentTokenIdBigNumber, isLoading: isLoadingCurrentTokenId } = useReadContract({
     ...contractConfig,
     functionName: 'getCurrentTokenId',
   });
@@ -54,7 +54,7 @@ export const Home = () => {
       },
     ]).flat();
 
-  const { data, isPending: isPendingAllFetch } = useReadContracts({
+  const { data, isLoading: isLoadingAllFetch } = useReadContracts({
     contracts: calls,
   });
 
@@ -62,13 +62,13 @@ export const Home = () => {
     if (data) {
       const allTokensData: Token[] = [];
       for (let i = 0; i < data.length; i += 2) {
-        const owner = data[i];
-        const metadataResponse = data[i + 1];
+        const owner = data[i]?.result;
+        const metadataResponse = data[i + 1]?.result;
 
         let metadata: TokenMetadata | null = null;
-        if (metadataResponse?.result) {
+        if (metadataResponse) {
           try {
-            metadata = JSON.parse(metadataResponse.result) as TokenMetadata;
+            metadata = JSON.parse(metadataResponse) as TokenMetadata;
           } catch (error) {
             console.log(error)
           }
@@ -76,11 +76,12 @@ export const Home = () => {
         if (metadata) {
           allTokensData.push({
             tokenId: (i/2).toString(),
-            owner: owner?.result,
+            owner: owner,
             metadata,
           });
         }
       }
+      console.log("allTokens", allTokensData)
       setTokens(allTokensData);
     }
   }, [data]);
@@ -96,34 +97,27 @@ export const Home = () => {
         </Highlight>
       </Heading>
       <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-        {isPendingCurrentTokenId && isPendingAllFetch && (
-          <>
-            {Array.from({ length: 4 }).map((_, index) => (
+        {isLoadingAllFetch
+          ? Array.from({ length: 4 }).map((_, index) => (
               <GridItem key={index} w="100%">
                 <CertificationCardSkeleton />
               </GridItem>
-            ))}
-          </> 
-        )}
-        {tokens.map((token, _index) => (
-          <>
+            ))
+          : tokens.map((token, _index) => (
             <GridItem key={`grid-item-${token.tokenId}-${_index}`} w="100%">
               <p>{token.tokenId}</p>
-              <CertificationCard
-                owner={token.owner}
-                title={token.metadata.title}
-                image={token.metadata.image}
-                status={CertificationStatus.CERTIFIED}
-                issuedBy={token.metadata.issuedBy}
-                issuedOn={token.metadata.issuedOn}
-                identifiant={token.metadata.identifiant}
-                tagsValue={token.metadata.tags}
-                description={token.metadata.description}
-                displayDivider
-              />
-            </GridItem>
-          </>
-        ))}
+                <CertificationCard
+                  title={token.metadata.title}
+                  image={token.metadata.image}
+                  issuedBy={token.metadata.issuedBy}
+                  issuedOn={token.metadata.issuedOn}
+                  identifiant={token.metadata.identifiant}
+                  tagsValue={token.metadata.tags}
+                  description={token.metadata.description}
+                  shareable
+                />
+              </GridItem>
+            ))}
       </Grid>
     </div>
   );

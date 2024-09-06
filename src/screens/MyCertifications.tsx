@@ -36,26 +36,51 @@ export interface TokenMetadata {
 export const MyCertifications = () => {
   const account = useAccount()
   const [tokens, setTokens] = useState<Token[]>([]);
-  const { data: currentTokenIdBigNumber, isPending: isPendingCurrentTokenId } = useReadContract({
+
+  const { data: currentTokenIdBigNumber, isLoading: isLoadingCurrentTokenId } = useReadContract({
     ...contractConfig,
     functionName: 'getCurrentTokenId',
   });
 
   const currentTokenId = currentTokenIdBigNumber ? parseInt(currentTokenIdBigNumber.toString(), 10) : 0;
-  const calls = Array.from({ length: currentTokenId }, (_, tokenId) => [
+    const availableTokenCalls = Array.from({ length: currentTokenId }, (_, tokenId) => [
       {
         ...contractConfig,
-        functionName: 'ownerOf',
-        args: [tokenId],
-      },
-      {
-        ...contractConfig,
-        functionName: 'getTokenMetadata',
-        args: [tokenId],
-      },
+        functionName: 'getTokenState',
+        args: [tokenId]
+      }
     ]).flat();
 
-  const { data, isPending: isPendingAllFetch } = useReadContracts({
+  const { data: availableTokenCallData, isLoading: isLoadingAvailableTokenCall } = useReadContracts({
+    contracts: availableTokenCalls,
+  });
+
+  const availableTokensList = [];
+  let calls = [];
+  
+  if (availableTokenCallData && !isLoadingAvailableTokenCall && !isLoadingCurrentTokenId) {
+    for (const [index, availableToken] of availableTokenCallData.entries()) {
+      if (availableToken?.result[0]) {
+        availableTokensList.push(index);
+      }
+    }
+    for (const tokenId of availableTokensList) {
+      calls.push(
+        {
+          ...contractConfig,
+          functionName: 'ownerOf',
+          args: [tokenId],
+        },
+        {
+          ...contractConfig,
+          functionName: 'getTokenMetadata',
+          args: [tokenId],
+        },
+      )
+    }
+  }
+
+  const { data, isLoading: isLoadingAllFetch } = useReadContracts({
     contracts: calls,
   });
 
@@ -63,21 +88,22 @@ export const MyCertifications = () => {
     if (data) {
       const allTokensData: Token[] = [];
       for (let i = 0; i < data.length; i += 2) {
-        const owner = data[i];
-        const metadataResponse = data[i + 1];
+        const owner = data[i]?.result;
+        const metadataResponse = data[i + 1]?.result;
 
         let metadata: TokenMetadata | null = null;
-        if (metadataResponse?.result) {
+        if (metadataResponse) {
           try {
-            metadata = JSON.parse(metadataResponse.result) as TokenMetadata;
+            metadata = JSON.parse(metadataResponse) as TokenMetadata;
           } catch (error) {
             console.log(error)
           }
         }
+
         if (metadata && account?.address === owner) {
           allTokensData.push({
             tokenId: (i/2).toString(),
-            owner: owner?.result,
+            owner: owner,
             metadata,
           });
         }
@@ -85,10 +111,6 @@ export const MyCertifications = () => {
       setTokens(allTokensData);
     }
   }, [data]);
-
-  console.log("is pendingg ", isPendingAllFetch)
-  console.log("is length ", tokens.length)
-
 
   return (
     <div>
@@ -100,13 +122,13 @@ export const MyCertifications = () => {
           My certifications
         </Highlight>
       </Heading>
-      {isPendingAllFetch !== undefined && tokens.length === 0 ? (
+      {!isLoadingAllFetch  && tokens.length === 0 ? (
         <Text>Sorry, you have no certification yet</Text>
       ) : (
         ""
       )}
-      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-        {isPendingAllFetch
+      <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+        {isLoadingAllFetch
           ? Array.from({ length: 4 }).map((_, index) => (
               <GridItem key={index} w="100%">
                 <CertificationCardSkeleton />
