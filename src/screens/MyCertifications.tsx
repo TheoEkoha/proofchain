@@ -59,8 +59,8 @@ export const MyCertifications = () => {
   let calls = [];
   
   if (availableTokenCallData && !isLoadingAvailableTokenCall && !isLoadingCurrentTokenId) {
-    for (const [index, availableToken] of availableTokenCallData.entries()) {
-      if (availableToken?.result[0]) {
+    for (const [index, availableToken] of (availableTokenCallData as any).entries()) {
+      if (availableToken && availableToken?.result.length > 0 && (availableToken?.result as any)[0]) {
         availableTokensList.push(index);
       }
     }
@@ -89,7 +89,7 @@ export const MyCertifications = () => {
       const allTokensData: Token[] = [];
       for (let i = 0; i < data.length; i += 2) {
         const owner = data[i]?.result;
-        const metadataResponse = data[i + 1]?.result;
+        const metadataResponse = data[i + 1]?.result as string;
 
         let metadata: TokenMetadata | null = null;
         if (metadataResponse) {
@@ -103,7 +103,7 @@ export const MyCertifications = () => {
         if (metadata && account?.address === owner) {
           allTokensData.push({
             tokenId: (i/2).toString(),
-            owner: owner,
+            owner: owner ? owner as string : "",
             metadata,
           });
         }

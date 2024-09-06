@@ -63,7 +63,7 @@ export const Home = () => {
       const allTokensData: Token[] = [];
       for (let i = 0; i < data.length; i += 2) {
         const owner = data[i]?.result;
-        const metadataResponse = data[i + 1]?.result;
+        const metadataResponse = data[i + 1]?.result as string;
 
         let metadata: TokenMetadata | null = null;
         if (metadataResponse) {
@@ -76,7 +76,7 @@ export const Home = () => {
         if (metadata) {
           allTokensData.push({
             tokenId: (i/2).toString(),
-            owner: owner,
+            owner: owner ? owner as string : "",
             metadata,
           });
         }
