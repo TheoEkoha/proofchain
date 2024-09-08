@@ -523,9 +523,8 @@ export const contract = getContract({
 
 
 export const config = createConfig({
-  chains: [arbitrum, arbitrumSepolia],
+  chains: [arbitrumSepolia],
   transports: {
-    [arbitrum.id]: http(),
     [arbitrumSepolia.id]: http(),
   },
 })
