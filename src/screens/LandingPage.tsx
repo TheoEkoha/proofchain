@@ -65,13 +65,13 @@ export const LandingPage = () => {
         <div>
           <Header />
           <Stack className="flex justify-center mb-20">
-            <SimpleGrid minChildWidth="300px" columns={3} spacing='50px'>
+            <SimpleGrid minChildWidth="300px" spacing='50px'>
               <CertificationCard
                 title="Certified Web 3.0 Professional (CW3P)"
                 image={CW3PImage}
                 status={CertificationStatus.CERTIFIED}
                 issuedBy="101 Blockchains"
-                issuedOn="08-07-2024"
+                issuedOn="2024-08-07"
                 description={
                   "The Certified Web 3.0 Professional (CW3P) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3P-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."
                 }
@@ -84,7 +84,7 @@ export const LandingPage = () => {
                 image={CW3BDImage}
                 status={CertificationStatus.CERTIFIED}
                 issuedBy="101 Blockchains"
-                issuedOn="08-14-2024"
+                issuedOn="2024-08-14"
                 description={
                   "The Certified Web3 Blockchain Developer (CW3BD) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3BD-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."
                 }
