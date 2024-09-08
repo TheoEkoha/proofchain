@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import CertificationCard, {
   CertificationStatus,
 } from "../components/Card/CertificationCard.component";
 import CertificationCardSkeleton from "../components/Card/CertificationCardSkeleton.component";
-import { Box, Grid, GridItem, Heading, Highlight, SimpleGrid } from "@chakra-ui/react";
+import { Box, GridItem, Heading, Highlight, SimpleGrid, Text } from "@chakra-ui/react";
 import { useReadContract, useReadContracts, useAccount } from 'wagmi';
 import { contractABI, contractConfig } from "../client";
 import { Abi } from "viem";
@@ -35,7 +34,7 @@ export interface TokenMetadata {
 
 export const Home = () => {
   const [tokens, setTokens] = useState<Token[]>([]);
-  const { data: currentTokenIdBigNumber, isLoading: isLoadingCurrentTokenId } = useReadContract({
+  const { data: currentTokenIdBigNumber, isLoading: isLoadingCurrentTokenId, error: currentTokenIdError } = useReadContract({
     ...contractConfig,
     functionName: 'getCurrentTokenId',
   });
@@ -54,7 +53,7 @@ export const Home = () => {
       },
     ]).flat();
 
-  const { data, isLoading: isLoadingAllFetch } = useReadContracts({
+  const { data, isLoading: isLoadingAllFetch, error: allFetchError } = useReadContracts({
     contracts: calls,
   });
 
@@ -70,18 +69,18 @@ export const Home = () => {
           try {
             metadata = JSON.parse(metadataResponse) as TokenMetadata;
           } catch (error) {
-            console.log(error)
+            console.log("Failed to parse metadata:", error);
           }
         }
         if (metadata) {
           allTokensData.push({
-            tokenId: (i/2).toString(),
+            tokenId: (i / 2).toString(),
             owner: owner ? owner as string : "",
             metadata,
           });
         }
       }
-      console.log("allTokens", allTokensData)
+      console.log("allTokens", allTokensData);
       setTokens(allTokensData);
     }
   }, [data]);
@@ -96,6 +95,11 @@ export const Home = () => {
           ProofChain's claimed certificates
         </Highlight>
       </Heading>
+
+      {/* Affichage des erreurs si présentes */}
+      {currentTokenIdError && <Text color="red.500"><p>Error fetching current token ID: {currentTokenIdError.message}</p></Text>}
+      {allFetchError && <Text color="red.500"><p>Error fetching tokens: {allFetchError.message}</p></Text>}
+
       <SimpleGrid minChildWidth="300px" columns={3} spacing='50px'>
         {isLoadingAllFetch
           ? Array.from({ length: 3 }).map((_, index) => (
@@ -104,21 +108,19 @@ export const Home = () => {
               </GridItem>
             ))
           : tokens.map((token, _index) => (
-            <>
-              <Box key={`grid-item-${token.tokenId}-${_index}`} w="100%">
-                <CertificationCard
-                  title={token.metadata.title}
-                  image={token.metadata.image}
-                  issuedBy={token.metadata.issuedBy}
-                  issuedOn={token.metadata.issuedOn}
-                  identifiant={token.metadata.identifiant}
-                  tagsValue={token.metadata.tags}
-                  description={token.metadata.description}
-                  shareable
-                />
-              </Box>
-            </>
-            ))}
+            <Box key={`grid-item-${token.tokenId}-${_index}`} w="100%">
+              <CertificationCard
+                title={token.metadata.title}
+                image={token.metadata.image}
+                issuedBy={token.metadata.issuedBy}
+                issuedOn={token.metadata.issuedOn}
+                identifiant={token.metadata.identifiant}
+                tagsValue={token.metadata.tags}
+                description={token.metadata.description}
+                shareable
+              />
+            </Box>
+          ))}
       </SimpleGrid>
     </div>
   );
