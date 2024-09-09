@@ -40,3 +40,36 @@
 body {
   font-family: 'Stem', sans-serif;
 }
+
+@media screen and (max-width: 480px) {
+  .certification-card {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+
+  .certification-image {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .heading {
+    font-size: 1.2rem;
+  }
+
+  .text {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .share-buttons {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .main-container {
+    padding: 0 10px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}

@@ -64,8 +64,14 @@ export const LandingPage = () => {
       <main className="p-4 pb-10 min-h-[100vh] flex justify-center container max-w-screen-lg mx-auto">
         <div>
           <Header />
-          <Stack className="flex justify-center mb-20">
-            <SimpleGrid minChildWidth="300px" spacing='50px'>
+          <Stack 
+            display="flex" 
+            direction={{ base: "column", md: "row" }} 
+            spacing={{ base: "20px", md: "50px" }} 
+            justify="center"
+            mb={10}
+            align="center"
+          >
               <CertificationCard
                 title="Certified Web 3.0 Professional (CW3P)"
                 image={CW3PImage}
@@ -92,7 +98,6 @@ export const LandingPage = () => {
                 displayDivider
                 shareableViewOnly
               />
-            </SimpleGrid>
           </Stack>
           <Divider mb={10} />
           <FeaturesGrid></FeaturesGrid>
@@ -127,9 +132,10 @@ export const LandingPage = () => {
                   <GridItem colSpan={3} >
                     <FormLabel>Issued on</FormLabel>
                     <Input
-                      placeholder="Date of obtention"
-                      size="md"
-                      type="date"
+                     id="date-obtention"
+                     placeholder="dd/mm/yyyy"
+                     size="md"
+                     type="date"
                     />
                   </GridItem>
                   <GridItem colSpan={3} maxWidth="100%">

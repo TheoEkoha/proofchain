@@ -48,26 +48,28 @@ export function CreateDigitalCertification() {
 
   return (
     <div className="p-2">
-      <Stepper size="lg" index={activeStep}>
-        {steps.map((step, index) => (
-          <Step key={index}>
-            <StepIndicator>
-              <StepStatus
-                complete={<StepIcon />}
-                incomplete={<StepNumber />}
-                active={<StepNumber />}
-              />
-            </StepIndicator>
+      <Box overflowX="auto" px={2} py={4}>
+        <Stepper size="lg" index={activeStep}>
+          {steps.map((step, index) => (
+            <Step key={index}>
+              <StepIndicator>
+                <StepStatus
+                  complete={<StepIcon />}
+                  incomplete={<StepNumber />}
+                  active={<StepNumber />}
+                />
+              </StepIndicator>
 
-            <Box flexShrink="0">
-              <StepTitle>{step.title}</StepTitle>
-              {/* <StepDescription>{step.subtitle}</StepDescription> */}
-            </Box>
+              <Box flexShrink="0">
+                <StepTitle>{step.title}</StepTitle>
+                {/* <StepDescription>{step.subtitle}</StepDescription> */}
+              </Box>
 
-            <StepSeparator />
-          </Step>
-        ))}
-      </Stepper>
+              <StepSeparator />
+            </Step>
+          ))}
+        </Stepper>
+      </Box>
       <Box mt={10}>
         <FormProvider {...methods}>
           <MultiStepForm
