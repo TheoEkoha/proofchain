@@ -14,7 +14,7 @@ import {
 const Header = () => {
   return (
     <>
-      <div className="flex flex-col items-center mb-20 md:mb-20">
+      <div className="flex flex-col items-center md:mb-5">
         <div>
           <VStack spacing={10} paddingBottom={6}>
             <img src={logo} alt="" className="size-[250px] md:size-[250px]" />

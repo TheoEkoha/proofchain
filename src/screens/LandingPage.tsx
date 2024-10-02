@@ -55,6 +55,14 @@ import { Connect } from "../components/Connect/ConnectButton.component";
 import { XIcon } from "react-share";
 import Footer from "../layouts/Footer";
 import FeaturesGrid from "../components/Features/FeaturesGrid.component";
+import { ContainerScroll } from "../components/Container/ContainerScrollAnimation";
+import {
+  Feature,
+  FeaturesSectionDemo,
+} from "../components/Features/Features.component";
+import { FcInspection } from "react-icons/fc";
+import { FeaturesSectionDemo2 } from "../components/Features/FeaturesSections.component";
+import { BackgroundLines } from "../components/Background/BackgroundBeams.component";
 
 export const LandingPage = () => {
   return (
@@ -63,44 +71,48 @@ export const LandingPage = () => {
       <NavBar />
       <main className="p-4 pb-10 min-h-[100vh] flex justify-center container max-w-screen-lg mx-auto">
         <div>
-          <Header />
-          <Stack 
-            display="flex" 
-            direction={{ base: "column", md: "row" }} 
-            spacing={{ base: "20px", md: "50px" }} 
-            justify="center"
-            mb={10}
-            align="center"
-          >
-              <CertificationCard
-                title="Certified Web 3.0 Professional (CW3P)"
-                image={CW3PImage}
-                status={CertificationStatus.CERTIFIED}
-                issuedBy="101 Blockchains"
-                issuedOn="2024-08-07"
-                description={
-                  "The Certified Web 3.0 Professional (CW3P) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3P-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."
-                }
-                identifiant="111578635"
-                displayDivider
-                shareableViewOnly
-              />
-              <CertificationCard
-                title="Certified Web3 Blockchain Developer (CW3BD)"
-                image={CW3BDImage}
-                status={CertificationStatus.CERTIFIED}
-                issuedBy="101 Blockchains"
-                issuedOn="2024-08-14"
-                description={
-                  "The Certified Web3 Blockchain Developer (CW3BD) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3BD-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."
-                }
-                identifiant="112308052"
-                displayDivider
-                shareableViewOnly
-              />
-          </Stack>
+          <BackgroundLines>
+            <ContainerScroll titleComponent={<Header />}>
+              <Stack
+                display="flex"
+                direction={{ base: "column", md: "row" }}
+                spacing={{ base: "20px", md: "50px" }}
+                justify="center"
+                mb={10}
+                align="center"
+              >
+                <CertificationCard
+                  title="Certified Web 3.0 Professional (CW3P)"
+                  image={CW3PImage}
+                  status={CertificationStatus.CERTIFIED}
+                  issuedBy="101 Blockchains"
+                  issuedOn="2024-08-07"
+                  description={
+                    "The Certified Web 3.0 Professional (CW3P) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3P-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."
+                  }
+                  identifiant="111578635"
+                  displayDivider
+                  shareableViewOnly
+                />
+                <CertificationCard
+                  title="Certified Web3 Blockchain Developer (CW3BD)"
+                  image={CW3BDImage}
+                  status={CertificationStatus.CERTIFIED}
+                  issuedBy="101 Blockchains"
+                  issuedOn="2024-08-14"
+                  description={
+                    "The Certified Web3 Blockchain Developer (CW3BD) certification recognizes a professional’s expertise in the domain of web3, the future of the internet. CW3BD-certified graduates are recognized for mastering web3 basics and the relationship between web3 and Ethereum, NFTs, and the metaverse. This certificate also focuses on web3 use cases, benefits, and the risks associated with web3 technologies along with applications of web3 in digital art, metaverse, and other applications."
+                  }
+                  identifiant="112308052"
+                  displayDivider
+                  shareableViewOnly
+                />
+              </Stack>
+            </ContainerScroll>
+          </BackgroundLines>
+
           <Divider mb={10} />
-          <FeaturesGrid></FeaturesGrid>
+          <FeaturesSectionDemo2 />
           <Divider mt={10} mb={10} />
           <Stack className="flex justify-center mb-20">
             <Heading textAlign="center" lineHeight="tall">
@@ -117,7 +129,7 @@ export const LandingPage = () => {
             </Text>
             <Box mt={10}>
               <FormControl>
-                <SimpleGrid spacing='50px'>
+                <SimpleGrid spacing="50px">
                   <GridItem colSpan={3}>
                     <FormLabel>Title</FormLabel>
                     <Input
@@ -129,13 +141,13 @@ export const LandingPage = () => {
                     <FormLabel>Issued by</FormLabel>
                     <Input placeholder="Linux foundation" type="text" />
                   </GridItem>
-                  <GridItem colSpan={3} >
+                  <GridItem colSpan={3}>
                     <FormLabel>Issued on</FormLabel>
                     <Input
-                     id="date-obtention"
-                     placeholder="dd/mm/yyyy"
-                     size="md"
-                     type="date"
+                      id="date-obtention"
+                      placeholder="dd/mm/yyyy"
+                      size="md"
+                      type="date"
                     />
                   </GridItem>
                   <GridItem colSpan={3} maxWidth="100%">
@@ -175,8 +187,8 @@ export const LandingPage = () => {
                       size="md"
                     />
                   </GridItem>
-                  
-                {/* </Grid> */}
+
+                  {/* </Grid> */}
                 </SimpleGrid>
               </FormControl>
             </Box>
