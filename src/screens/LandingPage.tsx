@@ -63,12 +63,22 @@ import {
 import { FcInspection } from "react-icons/fc";
 import { FeaturesSectionDemo2 } from "../components/Features/FeaturesSections.component";
 import { BackgroundLines } from "../components/Background/BackgroundBeams.component";
+import { FloatingNav } from "../components/Navbar/FloatingNavbar.component";
 
 export const LandingPage = () => {
+  const navItems = [
+    {
+      name: "Test",
+      link: "google.fr",
+    },
+    { name: "Foo", link: "bar" },
+  ];
   return (
     <>
       {" "}
-      <NavBar />
+      <FloatingNav navItems={navItems}>
+        <NavBar />
+      </FloatingNav>
       <main className="p-4 pb-10 min-h-[100vh] flex justify-center container max-w-screen-lg mx-auto">
         <div>
           <BackgroundLines>

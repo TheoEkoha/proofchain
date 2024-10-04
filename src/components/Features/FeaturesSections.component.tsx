@@ -34,11 +34,14 @@ export function FeaturesSectionDemo2() {
         </Text>
       </Stack>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 md:gap-2 max-w-7xl mx-auto">
-        {grid.map((feature) => (
-          <GlareCard className="flex flex-col items-center justify-center">
+        {grid.map((feature, idx) => (
+          <GlareCard
+            key={`feature-first-${idx}`} // Assure-toi que la clé est unique
+            className="flex flex-col items-center justify-center"
+          >
             <div
               style={{ height: 240, width: 275 }}
-              key={feature.title}
+              key={feature.title} // Cette clé pourrait être non unique si les titres sont dupliqués
               className="relative bg-gradient-to-b dark:from-neutral-900  bg-gray-700 dark:to-neutral-950 to-white p-6 rounded-3xl overflow-hidden"
             >
               <Grid size={20} />
@@ -175,10 +178,10 @@ export function GridPattern({ width, height, x, y, squares, ...props }: any) {
       />
       {squares && (
         <svg x={x} y={y} className="overflow-visible">
-          {squares.map(([x, y]: any) => (
+          {squares.map(([x, y]: any, index: number) => (
             <rect
               strokeWidth="0"
-              key={`${x}-${y}`}
+              key={`square-${x}-${y}-${index}`}
               width={width + 1}
               height={height + 1}
               x={x * width}
