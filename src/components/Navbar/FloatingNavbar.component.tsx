@@ -60,9 +60,10 @@ export const FloatingNav = ({
         }}
         style={{
           backgroundColor: "rgba(34, 34, 34, var(--tw-bg-opacity))", // Fond semi-transparent
+          height: "100px",
         }}
         className={cn(
-          "flex justify-center items-center w-full mx-auto max-w-7xl border border-transparent rounded-full shadow-md z-[5000] pl-8 pr-8 py-2", // Ajoute `justify-center` pour centrer, `w-full` pour la largeur complète et `max-w-7xl` pour une largeur maximale
+          "flex justify-center items-center w-full mx-auto border border-transparent rounded-full shadow-md z-[5000] pl-8 pr-8 py-2", // Ajoute `justify-center` pour centrer, `w-full` pour la largeur complète et `max-w-7xl` pour une largeur maximale
           detached
             ? "fixed top-0 inset-x-0 bg-black" // Navbar flottante avec fond noir quand on scroll
             : "absolute top-0", // Navbar fixe initialement
